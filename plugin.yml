@@ -1,0 +1,40 @@
+name: RepairUI
+main: fernanACM\RepairUI\RP
+version: 1.0.0
+api: 4.0.0
+author: fernanACM
+softdepend: [EconomyAPI, BedrockEconomy]
+description: Repair and customize your item names with RepairUI, for PocketMine-MP 4.0 servers
+website: https://github.com/fernanACM
+
+permissions:
+  repairui.cmd.acm:
+    default: true
+    description: /repairui
+  repairui.help.acm:
+    default: op
+    description: /repairui help
+  repairui.repair.all:
+    default: op
+    description: /repairui all
+  repairui.repair.hand:
+    default: op
+    description: /repairui hand
+  repairui.repair.xp: 
+    default: true
+    description: Repair your items with XP
+  repairui.repair.money:
+    default: true
+    description: Repair your items with MONEY
+  repairui.rename.xp:
+    default: op
+    description: Use the rename button with cost XP
+  repairui.rename.money:
+    default: op
+    description: Use the rename button with cost MONEY
+  repairui.lore.xp:
+    default: op
+    description: Use the lore button with cost XP
+  repairui.lore.money:
+    default: op
+    description: Use the lore button with cost MONEY
