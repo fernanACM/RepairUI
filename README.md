@@ -103,14 +103,9 @@
 ****
 
 ### ✔ Credits
-* **[CortexPE](https://github.com/CortexPE)**
-* **[Commando](https://github.com/CortexPE/Commando/tree/master/)**
-
-* **[Muqsit](https://github.com/Muqsit)**
-* **[SimplePacketHandler](https://github.com/Muqsit/SimplePacketHandler)**
-
-* **[Vecnavium](https://github.com/Vecnavium)**
-* **[FormsUI](https://github.com/Vecnavium/FormsUI/tree/master/)**
-
-* **[David-pm-pl](https://github.com/David-pm-pl)**
-* **[LibEco](https://github.com/David-pm-pl/libEco)**
+| Authors | Github | Lib |
+|------------------------|
+| CortexPE | [CortexPE](https://github.com/CortexPE) | [Commando](https://github.com/CortexPE/Commando/tree/master/) |
+| Muqsit | | [Muqsit](https://github.com/Muqsit) | [SimplePacketHandler](https://github.com/Muqsit/SimplePacketHandler) |
+| Vecnavium | [Vecnavium](https://github.com/Vecnavium) | FormsUI](https://github.com/Vecnavium/FormsUI/tree/master/) |
+| David-pm-pl | [David-pm-pl](https://github.com/David-pm-pl) | [LibEco](https://github.com/David-pm-pl/libEco) |
