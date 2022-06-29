@@ -104,7 +104,7 @@
 
 ### ✔ Credits
 | Authors | Github | Lib |
-|------------------------|
+|---------|--------|-----|
 | CortexPE | [CortexPE](https://github.com/CortexPE) | [Commando](https://github.com/CortexPE/Commando/tree/master/) |
 | Muqsit | [Muqsit](https://github.com/Muqsit) | [SimplePacketHandler](https://github.com/Muqsit/SimplePacketHandler) |
 | Vecnavium | [Vecnavium](https://github.com/Vecnavium) | FormsUI](https://github.com/Vecnavium/FormsUI/tree/master/) |
