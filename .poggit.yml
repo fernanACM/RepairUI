@@ -14,7 +14,7 @@ projects:
         branch: PM4
       - src: muqsit/simplepackethandler/SimplePacketHandler
         version: ^0.0.1
-      - src: davidglitch04\libEco\libEco
+      - src: davidglitch04\libEco
         version: ^3.0.0
     lint:
       phpstan: false
