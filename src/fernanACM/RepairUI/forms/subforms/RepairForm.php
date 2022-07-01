@@ -119,8 +119,8 @@ class RepairForm{
 					    $amount = RP::getInstance()->config->getNested("RepairCost.Repair.XP");
                         $damage = $player->getInventory()->getItemInHand()->getMeta();
 					    $item = $player->getInventory()->getItemInHand();
-                        $total = $amount * $damage;
-                        if($player->getXpManager()->getXpLevel() >= $amount * $damage){
+                        $total = $amount + $damage;
+                        if($player->getXpManager()->getXpLevel() >= $amount + $damage){
                             if(($item instanceof Tool) or ($item instanceof Armor)){
                                if($item->getMeta() !== 0){
                                    $item->setDamage(0);
@@ -158,7 +158,7 @@ class RepairForm{
 		$msg = RP::getInstance()->getMessage($player, "Forms.RepairXP.content");
         $prefix = RP::getInstance()->getMessage($player, "Prefix");
 		$item = $player->getInventory()->getItemInHand();
-        $total = $amount * $damage;
+        $total = $amount + $damage;
         if($item->getId() == 0){
             $player->sendMessage($prefix . RP::getInstance()->getMessage($player, "Messages.no-item"));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
