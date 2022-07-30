@@ -27,14 +27,14 @@ permissions:
     default: true
     description: Repair your items with MONEY
   repairui.rename.xp:
-    default: op
+    default: true
     description: Use the rename button with cost XP
   repairui.rename.money:
-    default: op
+    default: true
     description: Use the rename button with cost MONEY
   repairui.lore.xp:
-    default: op
+    default: true
     description: Use the lore button with cost XP
   repairui.lore.money:
-    default: op
+    default: true
     description: Use the lore button with cost MONEY
