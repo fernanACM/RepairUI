@@ -3,97 +3,131 @@
 
 [![](https://poggit.pmmp.io/shield.api/RepairUI)](https://poggit.pmmp.io/p/RepairUI)
 
-**Repair and customize your item names with RepairUI, use money or experience to perform these actions. Only for PocketMine-MP 4.0 servers**
+**Repair and customize your item names with RepairUI, use money or experience to perform these actions. Only for PocketMine-MP 5.0 servers**
 
 ![Captura de pantalla 2022-06-29 174022](https://user-images.githubusercontent.com/83558341/176567746-9eda44e8-2ce8-4a36-9b84-eacf611e1385.png)
 
 <a href="https://discord.gg/YyE9XFckqb"><img src="https://img.shields.io/discord/837701868649709568?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
 
+### 🌍 Wiki
+* Check our plugin [wiki](https://github.com/fernanACM/RepairUI/wiki) for features and secrets in the...
+
 ### 💡 Implementations
-* [x] Images > *To load the images, use [FormImagesFIX](https://poggit.pmmp.io/r/146450/FormImagesFix_dev-14.phar)*
+* [x] Images > *To load the images, use [FormImagesFIX](https://poggit.pmmp.io/ci/VennDev/VFormImagesFix/VFormImagesFix)*
 * [X] Configuration
-* [x] Sounds.
-* [x] Message customization.
-* [X] Commands.
-* [x] Keys in messages.yml.
+* [X] Multilanguage
+* [x] EconmyAPI & BedrockEconomy
+* [x] Sounds
+* [X] Commands
 ---
 
 ### 💾 Config
 ```yml
-   #  ____                           _          _   _   ___ 
-   # |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
-   # | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
-   # |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
-   # |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
-   #                |_|                                     
-   #   Copyright [2022-2022] [fernanACM]
+#  ____                           _          _   _   ___ 
+# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
+# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
+# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
+# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
+#                |_|                                     
+#           by fernanACM
+# Repair and customize your item names with RepairUI, for PocketMine-MP 5.0 servers
 
-   #   Licensed under the Apache License, Version 2.0 (the "License");
-   #   you may not use this file except in compliance with the License.
-   #   You may obtain a copy of the License at
+# DO NOT TOUCH!
+config-version: "1.0.0"
+# Plugin prefix
+Prefix: "&l&f[&dRepairUI&f]&8»&r "
+# Languages
+# "eng", // English
+# "spa", // Spanish
+# "ger", // German
+# "indo", // Indonesian
+# "vie" // Vietnamese
+language: eng
+# Usa economyapi, bedrockeconomy, xp
+Economy: 
+  provider: bedrockeconomy
+# ==(SETTINGS)==
+Settings:
+  Use:
+    # Use "true" or "false" to interact with the anvil
+    anvil: true
+  Commands:
+    # Use "true" or "false" to run the command
+    # RepairAll command; /repair all
+    all: true
+    # Use "true" or "false" to run the command
+    # RepairHand command: /repair hand
+    hand: true
+    # Use "true" or "false" to run the command
+    # RepairAll command; /repair rename <name>
+    rename: true
+    # Use "true" or "false" to run the command
+    # RepairAll command; /repair lore <lore>
+    lore: true
 
-   #       http://www.apache.org/licenses/LICENSE-2.0
-
-   #   Unless required by applicable law or agreed to in writing, software
-   #   distributed under the License is distributed on an "AS IS" BASIS,
-   #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   #   See the License for the specific language governing permissions and
-   #   limitations under the License.
-
-   # Repair and customize your item names with RepairUI, for PocketMine-MP 4.0 servers
-
-   # =======(SETTINGS)=======
-   # Use "true" or "false" to interact with the anvil
-   Use:
-     Anvil: true
-     # Use "true" or "false" to run the command
-   Commands:
-     # RepairAll command </repair all>
-     all: true
-     # RepairHand command </repair hand>
-     hand: true
-
-   RepairCost:
-    # RepairUI
-    Repair:
-      # Put the amount of money cost to repair the items
-      # SMALL NUMBERS RECOMMENDED!!
-      Money: 30
-      # Put the amount of experience cost to repair the items
-      # SMALL NUMBERS RECOMMENDED!!
-      XP: 10
-
-    # RenameUI
-    Rename:
-      # Put the amount of money cost to change the name of the items
-      Money: 50
-      # Put the amount of experence cost to change the name of the items
-      XP: 20
-
-    # LoreUI
-    Lore:
-      # Put the amount of money cost to change the lore of the items
-      Money: 60
-      # Put the amount of experience cost to change the lore of the items
-      XP: 20
+# ==(REPAIR COST)==
+RepairCost:
+  # Repair mode
+  Repair:
+    # Put the amount of money cost to repair the items
+    money-cost: 30
+    # Put the amount of experience cost to repair the items
+    xp-cost: 10
+    # Damage repair mode. The price will be multiplied by the damage of the item. 
+    # IT IS RECOMMENDED TO PUT THE PRICE LOW IF THIS OPTION IS CURRENT.
+    # Use "true" or "false" to enable/disable this option
+    damage-mode: false
+  # Lore mode
+  Lore:
+    # Put the amount of money cost to change the lore of the items
+    money-cost: 60
+    # Put the amount of experence cost to change the lore of the items
+    xp-cost: 20
+  # Rename mode
+  Rename:
+    # Put the amount of money cost to change the name of the items
+    money-cost: 50
+    # Put the amount of experence cost to change the name of the items
+    xp-cost: 20
 ```
+
 ### 🕹 Commands
-- ```/repairui``` > Open a menu for convenience
-- ```/repairui help``` > Command list
-- ```/repairui hand``` > Repair all your items at your fingertips
-- ```/repairui all``` > Repair the items in your hand
+| Command | Description |
+|---------|-------------|
+| ```/repairui``` | Open the main menu |
+| ```/repairui help``` | Command list |
+| ```/repairui all``` | Repair all items |
+| ```/repairui hand``` | Repair the items in your hand |
+| ```/repairui rename``` | Rename the item in your hand |
+| ```/repairui lore``` | Lore the item in your hand |
 
 ### 🔒 Permissions
-- Executing the command: ```repairui.cmd.acm```
-- Command list: ```repairui.help.acm```
-- RepairAll: ```repairui.repair.all```
-- RepairHand: ```repairui.repair.hand```
-- RepairMoney: ```repairui.repair.money```
-- RepairXP: ```repairui.repair.xp```
-- RenameMoney: ```repairui.rename.money```
-- RenameXP: ```repairui.rename.xp```
-- LoreMoney: ```repairui.lore.money```
-- LoreXP: ```repairui.lore.xp```
+| Permission | Description |
+|---------|-------------|
+| ```repairui.cmd.acm``` | Executing the command |
+| ```repairui.help.acm``` | Command list |
+| ```repairui.repair.all``` | Repair all command |
+| ```repairui.repair.hand``` | Repair hand command |
+| ```repairui.repair.money``` | Repair with money |
+| ```repairui.repair.xp``` | Repair with xp |
+| ```repairui.rename.money``` | Rename with money |
+| ```repairui.rename.xp``` | Rename with xp |
+| ```repairui.rename.cmd``` | Rename command |
+| ```repairui.lore.money``` | Lore with money |
+| ```repairui.lore.xp``` | Lore with xp |
+| ```repairui.lore.cmd``` | Lore command |
+
+### 🌐 MultiLanguage
+| Language | Translated by |
+|----------|---------------|
+| English | [fernanACM](https://github.com/fernanACM) |
+| Spanish | [fernanACM](https://github.com/fernanACM) |
+| Indonesian | RepairUI |
+| German | [GamerMJay](https://github.com/GamerMJay) |
+| Vietnamese | [NhanAZ](https://github.com/NhanAZ) |
+
+### 📢 Report bug
+* If you find any bugs in this plugin, please let me know via: [issues](https://github.com/fernanACM/RepairUI/issues)
 
 ### 📞 Contact 
 | Redes | Tag | Link |
@@ -110,5 +144,5 @@
 | CortexPE | [CortexPE](https://github.com/CortexPE) | [Commando](https://github.com/CortexPE/Commando/tree/master/) |
 | Muqsit | [Muqsit](https://github.com/Muqsit) | [SimplePacketHandler](https://github.com/Muqsit/SimplePacketHandler) |
 | Vecnavium | [Vecnavium](https://github.com/Vecnavium) | [FormsUI](https://github.com/Vecnavium/FormsUI/tree/master/) |
-| David-pm-pl | [David-pm-pl](https://github.com/David-pm-pl) | [LibEco](https://github.com/David-pm-pl/libEco) |
-****
+| DaPigGuy | [DaPigGuy](https://github.com/DaPigGuy) | [libPiggyEconomy](https://github.com/DaPigGuy/libPiggyEconomy) |
+| DaPigGuy | [DaPigGuy](https://github.com/DaPigGuy) | [libPiggyUpdateChecker](https://github.com/DaPigGuy/libPiggyUpdateChecker) |
