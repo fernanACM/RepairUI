@@ -1,0 +1,134 @@
+#  ____                           _          _   _   ___ 
+# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
+# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
+# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
+# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
+#                |_|                                     
+#           by fernanACM
+# Sửa chữa và tùy chỉnh tên mục của bạn với RepairUI, dành cho máy chủ PocketMine-MP 5.0
+
+# KHÔNG CHẠM!
+language-version: "1.0.0"
+
+Forms:
+  RepairMenu:
+    title: "&l&dRepairUI"
+    content: "&eChọn tùy chọn ưa thích của bạn:"
+    button-repair: "&l&2SỬA CHỮA{LINE}&r&0Nhấp"
+    button-rename: "&l&2ĐỔI TÊN{LINE}&r&0Nhấp"
+    button-lore: "&l&2LORE{LINE}&r&0Nhấp"
+    button-exit: "&l&4ĐÓNG MENU{LINE}&r&0Nhấp"
+
+  RepairMoney:
+    title: "&l&dRepairUI&r &a-&l&c SỬA CHỮA-TIỀN"
+    # Sử dụng các khóa: {BALANCE} để kiểm tra số tiền của bạn và {COST} để xem giá sản phẩm.
+    content-normal-mode: 
+      - "&b»Bạn có thể sửa chữa mục của bạn bằng tiền của bạn"
+      - "&e»Tiền của tôi: &a{BALANCE}$"
+      - "&e»Giá sửa chữa: &b{COST}$"
+      - "&e»Hư hỏng: &c{DAMAGE}"
+    # Sử dụng các khóa: {BALANCE} để kiểm tra số tiền của bạn và {COST} để xem giá sản phẩm, {DAMAGE} để xem hư hỏng của mục và {TOTAL} để kiểm tra tổng giá.
+    content-damage-mode:
+      - "&b»Bạn có thể sửa chữa mục của bạn bằng tiền của bạn"
+      - "&e»Tiền của tôi: &a{BALANCE}$"
+      - "&e»Giá per hư hỏng: &b{COST}$"
+      - "&e»Hư hỏng: &c{DAMAGE}" 
+      - "&c»Thuế: &a{TOTAL}"
+    button-repair: "&3Sửa chữa mục của bạn{LINE}&0Nhấp"
+    button-back: "&4TRỞ LẠI{LINE}&0Nhấp"
+
+  RepairXP:
+    title: "&l&dRepairUI&r &a-&l&c SỬA CHỮA-XP"
+    # Sử dụng các khóa: {XP} để kiểm tra kinh nghiệm của bạn và {COST} để xem giá sản phẩm.
+    content-normal-mode: 
+      - "&b»Bạn có thể sửa chữa mục của bạn bằng kinh nghiệm của bạn"
+      - "&e»Tiền của tôi: &a{XP}lvl"
+      - "&e»Giá sửa chữa: &b{COST}lvl"
+      - "&e»Hư hỏng: &c{DAMAGE}"
+    # Sử dụng các khóa: {BALANCE} để kiểm tra kinh nghiệm của bạn và {COST} để xem giá sản phẩm, {DAMAGE} để xem hư hỏng của mục và {TOTAL} để kiểm tra tổng giá.
+    content-damage-mode:
+      - "&b»Bạn có thể sửa chữa mục của bạn bằng kinh nghiệm của bạn"
+      - "&e»Tiền của tôi: &a{XP}lvl"
+      - "&e»Giá per hư hỏng: &b{COST}lvl"
+      - "&e»Hư hỏng: &c{DAMAGE}" 
+      - "&c»Thuế: &a{TOTAL}"
+    button-repair: "&3Sửa chữa mục của bạn{LINE}&0Nhấp"
+    button-back: "&4TRỞ LẠI{LINE}&0Nhấp"
+  RenameMoney:
+    title: "&l&deRpairUI&r &a-&l&c ĐỔI-TÊN-TIỀN"
+    # Sử dụng các khóa: {BALANCE} để kiểm tra số tiền của bạn và {COST} để xem giá sản phẩm.
+    content: 
+      - "&b»Bạn có thể đổi tên mục của bạn bằng tiền của bạn." 
+      - "&e»Tiền của tôi: &a{BALANCE}$" 
+      - "&e»Giá đổi tên: &b{COST}$"
+    input1: "Viết tên cho mục của bạn"
+    input2: "Ví dụ: SuperPro"
+
+  RenameXP:
+    title: "&l&dRepairUI&r &a-&l&c ĐỔI-TÊN-XP"
+    # Sử dụng các khóa: {XP} để kiểm tra kinh nghiệm của bạn và {COST} để xem giá sản phẩm.
+    content: 
+      - "&b»Bạn có thể đổi tên mục của bạn bằng kinh nghiệm của bạn." 
+      - "&e»Tiền của tôi: &a{XP}lvl" 
+      - "&e»Giá đổi tên: &b{COST}lvl"
+    input1: "Viết tên cho mục của bạn."
+    input2: "Ví dụ: SuperSIPE"
+  
+  LoreMoney:
+    title: "&l&dRepairUI&r &a-&l&c LORE-TIỀN"
+    # Sử dụng các khóa: {BALANCE} để kiểm tra số tiền của bạn và {COST} để xem giá sản phẩm.
+    content: 
+      - "&b»Bạn có thể đổi tên mục của bạn bằng tiền của bạn." 
+      - "&e»Tiền của tôi: &a{BALANCE}$" 
+      - "&e»Giá Lore: &b{COST}$"
+    input1: "Viết tên lore cho mục của bạn"
+    input2: "Ví dụ: JonatanSipe{LINE}Okpe"
+
+  LoreXP:
+    title: "&l&dRepairUI &r &a-&l&c LORE-XP"
+    # Sử dụng các khóa: {XP} để kiểm tra kinh nghiệm của bạn và {COST} để xem giá sản phẩm.
+    content: 
+      - "&b»Bạn có thể đổi tên mục của bạn bằng kinh nghiệm của bạn." 
+      - "&e»Tiền của tôi: &a{XP}lvl" 
+      - "&e»Giá Lore: &b{COST}lvl"
+    input1: "Viết tên lore cho mục của bạn"
+    input2: "Ví dụ: Nope{LINE}sipe"
+
+  CostForm:
+    Repair:
+      title: "&l&dRepairUI&r &a-&l&c SỬA CHỮA"
+      content: "&eChọn tùy chọn ưa thích của bạn:"
+      button-money: "&l&9SỬA CHỮA TIỀN&r{LINE}&0Nhấp"
+      button-xp: "&l&9SỬA CHỮA XP&r{LINE}&0Nhấp"
+      button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"
+    Rename:
+      title: "&l&dRepairUI&r &a-&l&c ĐỔI TÊN"
+      content: "&l&dChọn tùy chọn ưa thích của bạn:"
+      button-money: "&l&9ĐỔI TÊN TIỀN&r{LINE}&0Nhấp"
+      button-xp: "&l&9ĐỔI TÊN XP&r{LINE}&0Nhấp"
+      button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"
+    Lore:
+      title: "&l&dRepairUI&r &a-&l&c LORE"
+      content: "&eChọn tùy chọn ưa thích của bạn:"
+      button-money: "&l&9LORE TIỀN&r{LINE}&0Nhấp"
+      button-xp: "&l&9LORE XP&r{LINE}&0Nhấp"
+      button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"
+      
+Messages:
+  error:
+    no-permission: "&cBạn không có đủ quyền để thực hiện hành động này!"
+    no-money: "&cBạn không có đủ tiền để thực hiện hành động này!"
+    no-xp: "&cBạn không có đủ kinh nghiệm để thực hiện hành động này!"
+    no-damage: "&cMục này không hỏng!"
+    no-item: "&cĐây không phải là một mục, hãy đổi sang mục khác."
+    lore-null: "&bBạn chưa đặt tên cho lore của bài viết này...."
+    rename-null: "&bBạn chưa đặt tên cho mục này..."
+
+  success:
+    repair-success: "&aSửa chữa thành công!"
+    repair-all-success: "&bTất cả các mục của bạn đã được sửa chữa!"
+    repair-hand-success: "&bMục trong tay của bạn đã được sửa chữa!"
+    # Sử dụng khóa: {RENAME} để xem tên mục đã được đổi tên
+    rename-success: "&aĐổi tên mục thành công thành: &d{RENAME}"
+    # Sử dụng khóa: {LORE} để xem tên mục với lore mới
+    lore-success: "&aĐổi lore mục thành công thành: &d{LORE}"

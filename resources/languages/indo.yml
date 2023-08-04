@@ -1,0 +1,134 @@
+#  ____                           _          _   _   ___ 
+# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
+# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
+# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
+# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
+#                |_|                                     
+#           by fernanACM
+# Perbaiki dan sesuaikan nama item Anda dengan RepairUI, untuk server PocketMine-MP 5.0
+
+# JANGAN DIUBAH!
+language-version: "1.0.0"
+
+Forms:
+  RepairMenu:
+    title: "&l&dRepairUI"
+    content: "&ePilih pilihan yang Anda inginkan:"
+    button-repair: "&l&2REPARASI{LINE}&r&0Klik"
+    button-rename: "&l&2GANTI NAMA{LINE}&r&0Klik"
+    button-lore: "&l&2LORE{LINE}&r&0Klik"
+    button-exit: "&l&4TUTUP MENU{LINE}&r&0Klik"
+
+  RepairMoney:
+    title: "&l&dRepairUI&r &a-&l&c REPARASI-UANG"
+    # Gunakan kunci: {BALANCE} untuk memeriksa uang Anda dan {COST} untuk melihat harga produk.
+    content-normal-mode: 
+      - "&b»Di sini Anda dapat memperbaiki barang dengan uang Anda"
+      - "&e»Uang saya: &a{BALANCE}$"
+      - "&e»Harga perbaikan: &b{COST}$"
+      - "&e»Kerusakan: &c{DAMAGE}"
+    # Gunakan kunci: {BALANCE} untuk memeriksa uang Anda dan {COST} untuk melihat harga produk, {DAMAGE} untuk melihat kerusakan item, dan {TOTAL} untuk memeriksa harga total.
+    content-damage-mode:
+      - "&b»Di sini Anda dapat memperbaiki barang dengan uang Anda"
+      - "&e»Uang saya: &a{BALANCE}$"
+      - "&e»Harga per kerusakan: &b{COST}$"
+      - "&e»Kerusakan: &c{DAMAGE}" 
+      - "&c»Pajak: &a{TOTAL}"
+    button-repair: "&3Perbaiki barang Anda{LINE}&0Klik"
+    button-back: "&4KEMBALI{LINE}&0Klik"
+
+  RepairXP:
+    title: "&l&dRepairUI&r &a-&l&c REPARASI-XP"
+    # Gunakan kunci: {XP} untuk memeriksa pengalaman Anda dan {COST} untuk melihat harga produk.
+    content-normal-mode: 
+      - "&b»Di sini Anda dapat memperbaiki barang dengan pengalaman Anda"
+      - "&e»Pengalaman saya: &a{XP}lvl"
+      - "&e»Harga perbaikan: &b{COST}lvl"
+      - "&e»Kerusakan: &c{DAMAGE}"
+    # Gunakan kunci: {BALANCE} untuk memeriksa pengalaman Anda dan {COST} untuk melihat harga produk, {DAMAGE} untuk melihat kerusakan item, dan {TOTAL} untuk memeriksa harga total.
+    content-damage-mode:
+      - "&b»Di sini Anda dapat memperbaiki barang dengan pengalaman Anda"
+      - "&e»Pengalaman saya: &a{XP}lvl"
+      - "&e»Harga per kerusakan: &b{COST}lvl"
+      - "&e»Kerusakan: &c{DAMAGE}" 
+      - "&c»Pajak: &a{TOTAL}"
+    button-repair: "&3Perbaiki barang Anda{LINE}&0Klik"
+    button-back: "&4KEMBALI{LINE}&0Klik"
+  RenameMoney:
+    title: "&l&dRepairUI&r &a-&l&c GANTI-NAMA-UANG"
+    # Gunakan kunci: {BALANCE} untuk memeriksa uang Anda, dan {COST} untuk melihat harga produk.
+    content: 
+      - "&b»Di sini Anda dapat mengubah nama barang dengan uang Anda." 
+      - "&e»Uang saya: &a{BALANCE}$" 
+      - "&e»Biaya mengganti nama: &b{COST}$"
+    input1: "Tulis nama untuk barang Anda"
+    input2: "Contoh: SuperPro"
+
+  RenameXP:
+    title: "&l&dRepairUI&r &a-&l&c GANTI-NAMA-XP"
+    # Gunakan kunci: {XP} untuk memeriksa pengalaman Anda, dan {COST} untuk melihat harga produk.
+    content: 
+      - "&b»Di sini Anda dapat mengubah nama barang dengan pengalaman Anda." 
+      - "&e»Pengalaman saya: &a{XP}lvl" 
+      - "&e»Biaya mengganti nama: &b{COST}lvl"
+    input1: "Tulis nama untuk barang Anda."
+    input2: "Contoh: SuperSIPE"
+  
+  LoreMoney:
+    title: "&l&dRepairUI&r &a-&l&c LORE-UANG"
+    # Gunakan kunci: {BALANCE} untuk memeriksa uang Anda, dan {COST} untuk melihat harga produk.
+    content: 
+      - "&b»Di sini Anda dapat mengubah nama barang dengan uang Anda." 
+      - "&e»Uang saya: &a{BALANCE}$" 
+      - "&e»Biaya Lore: &b{COST}$"
+    input1: "Tulis nama untuk lore barang Anda"
+    input2: "Contoh: JonatanSipe{LINE}Okpe"
+
+  LoreXP:
+    title: "&l&dRepairUI&r &a-&l&c LORE-XP"
+    # Gunakan kunci: {XP} untuk memeriksa pengalaman Anda, dan {COST} untuk melihat harga produk.
+    content: 
+      - "&b»Di sini Anda dapat mengubah nama barang dengan pengalaman Anda." 
+      - "&e»Pengalaman saya: &a{XP}lvl" 
+      - "&e»Biaya Lore: &b{COST}lvl"
+    input1: "Tulis nama untuk lore barang Anda"
+    input2: "Contoh: Nope{LINE}sipe"
+
+  CostForm:
+    Repair:
+      title: "&l&dRepairUI&r &a-&l&c PERBAIKI"
+      content: "&ePilih pilihan yang Anda inginkan:"
+      button-money: "&l&9PERBAIKI UANG&r{LINE}&0Klik"
+      button-xp: "&l&9PERBAIKI XP&r{LINE}&0Klik"
+      button-back: "&l&4KEMBALI&r{LINE}&0Klik"
+    Rename:
+      title: "&l&dRepairUI&r &a-&l&c GANTI NAMA"
+      content: "&l&dPilih pilihan yang Anda inginkan:"
+      button-money: "&l&9GANTI NAMA UANG&r{LINE}&0Klik"
+      button-xp: "&l&9GANTI NAMA XP&r{LINE}&0Klik"
+      button-back: "&l&4KEMBALI&r{LINE}&0Klik"
+    Lore:
+      title: "&l&dRepairUI&r &a-&l&c LORE"
+      content: "&ePilih pilihan yang Anda inginkan:"
+      button-money: "&l&9LORE UANG&r{LINE}&0Klik"
+      button-xp: "&l&9LORE XP&r{LINE}&0Klik"
+      button-back: "&l&4KEMBALI&r{LINE}&0Klik"
+      
+Messages:
+  error:
+    no-permission: "&cAnda tidak memiliki izin yang cukup untuk melakukan tindakan ini!"
+    no-money: "&cAnda tidak memiliki cukup uang untuk melakukan tindakan ini!"
+    no-xp: "&cAnda tidak memiliki cukup pengalaman untuk melakukan tindakan ini!"
+    no-damage: "&cBarang ini tidak rusak!"
+    no-item: "&cIni bukanlah sebuah barang, tukarkan dengan yang lain."
+    lore-null: "&bAnda tidak memberi nama lore untuk artikel ini...."
+    rename-null: "&bAnda tidak memberi nama pada barang ini..."
+
+  success:
+    repair-success: "&aPerbaikan berhasil!"
+    repair-all-success: "&bSemua barang Anda telah diperbaiki!"
+    repair-hand-success: "&bBarang di tangan Anda telah diperbaiki!"
+    # Gunakan kunci: {RENAME} untuk melihat nama barang yang telah diubah namanya
+    rename-success: "&aBerhasil mengubah nama barang menjadi: &d{RENAME}"
+    # Gunakan kunci: {LORE} untuk melihat nama barang dengan lore baru
+    lore-success: "&aBerhasil mengubah lore barang menjadi: &d{LORE}"

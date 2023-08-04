@@ -1,0 +1,134 @@
+#  ____                           _          _   _   ___ 
+# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
+# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
+# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
+# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
+#                |_|                                     
+#           by fernanACM
+# Repair and customize your item names with RepairUI, for PocketMine-MP 5.0 servers
+
+# DO NOT TOUCH!
+language-version: "1.0.0"
+
+Forms:
+  RepairMenu:
+    title: "&l&dRepairUI"
+    content: "&eSelect your preferred option:"
+    button-repair: "&l&2REPAIR{LINE}&r&0Click"
+    button-rename: "&l&2RENAME{LINE}&r&0Click"
+    button-lore: "&l&2LORE{LINE}&r&0Click"
+    button-exit: "&l&4CLOSE MENU{LINE}&r&0Click"
+
+  RepairMoney:
+    title: "&l&dRepairUI&r &a-&l&c REPAIR-MONEY"
+    # Use the keys: {BALANCE} to check your money and {COST} to see the price of the product.
+    content-normal-mode: 
+      - "&b»Here you can repair with your items with your money"
+      - "&e»My money: &a{BALANCE}$"
+      - "&e»Repair price: &b{COST}$"
+      - "&e»Damage: &c{DAMAGE}"
+    # Use the keys: {BALANCE} to check your money and {COST} to see the price of the product, {DAMAGE} to see the damage of the item and {TOTAL} to check the total price
+    content-damage-mode:
+      - "&b»Here you can repair with your items with your money"
+      - "&e»My money: &a{BALANCE}$"
+      - "&e»Price per damage: &b{COST}$"
+      - "&e»Damage: &c{DAMAGE}" 
+      - "&c»Taxes: &a{TOTAL}"
+    button-repair: "&3Repair your item{LINE}&0Click"
+    button-back: "&4TO RETURN{LINE}&0Click"
+
+  RepairXP:
+    title: "&l&dRepairUI&r &a-&l&c REPAIR-XP"
+    # Use the keys: {XP} to check your experience and {COST} to see the price of the product.
+    content-normal-mode: 
+      - "&b»Here you can repair with your items with your experience"
+      - "&e»My money: &a{XP}lvl"
+      - "&e»Repair price: &b{COST}lvl"
+      - "&e»Damage: &c{DAMAGE}"
+    # Use the keys: {BALANCE} to check your experience and {COST} to see the price of the product, {DAMAGE} to see the damage of the item and {TOTAL} to check the total price
+    content-damage-mode:
+      - "&b»Here you can repair with your items with your money"
+      - "&e»My money: &a{XP}lvl"
+      - "&e»Price per damage: &b{COST}lvl"
+      - "&e»Damage: &c{DAMAGE}" 
+      - "&c»Taxes: &a{TOTAL}"
+    button-repair: "&3Repair your item{LINE}&0Click"
+    button-back: "&4TO RETURN{LINE}&0Click"
+  RenameMoney:
+    title: "&l&dRepairUI&r &a-&l&c RENAME-MONEY"
+    # Use the keys: {BALANCE} to check your money, and {COST} to see the price of the product.
+    content: 
+      - "&b»Here you can change the name of your items with your money." 
+      - "&e»My money: &a{BALANCE}$" 
+      - "&e»Rename cost: &b{COST}$"
+    input1: "Write a name for your item"
+    input2: "Example: SuperPro"
+
+  RenameXP:
+    title: "&l&dRepairUI&r &a-&l&c RENAME-XP"
+    # Use the keys: {XP} to check your experience, and {COST} to see the price of the product.
+    content: 
+      - "&b»Here you can change the name of your items with your expericience." 
+      - "&e»My money: &a{XP}lvl" 
+      - "&e»Rename cost: &b{COST}lvl"
+    input1: "Write a name for your item."
+    input2: "Example: SuperSIPE"
+  
+  LoreMoney:
+    title: "&l&dRepairUI&r &a-&l&c LORE-MONEY"
+    # Use the keys: {BALANCE} to check your money, and {COST} to see the price of the product.
+    content: 
+      - "&b»Here you can change the name of your items with your money." 
+      - "&e»My money: &a{BALANCE}$" 
+      - "&e»Lore cost: &b{COST}$"
+    input1: "Write the name of the lore for your item"
+    input2: "Example: JonatanSipe{LINE}Okpe"
+
+  LoreXP:
+    title: "&l&dRepairUI &r &a-&l&c LORE-XP"
+    # Use the keys: {XP} to check your experience, and {COST} to see the price of the product.
+    content: 
+      - "&b»Here you can change the name of your items with your expericience." 
+      - "&e»My money: &a{XP}lvl" 
+      - "&e»Lore cost: &b{COST}lvl"
+    input1: "Write the name of the lore for your item"
+    input2: "Example: Nope{LINE}sipe"
+
+  CostForm:
+    Repair:
+      title: "&l&dRepairUI&r &a-&l&c REPAIR"
+      content: "&eSelect your preferred option:"
+      button-money: "&l&9REPAIR MONEY&r{LINE}&0Click"
+      button-xp: "&l&9REPAIR XP&r{LINE}&0Click"
+      button-back: "&l&4TO RETURN&r{LINE}&0Click"
+    Rename:
+      title: "&l&dRepairUI&r &a-&l&c RENAME"
+      content: "&l&dSelect your preferred option:"
+      button-money: "&l&9RENAME MONEY&r{LINE}&0Click"
+      button-xp: "&l&9RENAME XP&r{LINE}&0Click"
+      button-back: "&l&4TO RETURN&r{LINE}&0Click"
+    Lore:
+      title: "&l&dRepairUI&r &a-&l&c LORE"
+      content: "&eSelect your preferred option:"
+      button-money: "&l&9LORE MONEY&r{LINE}&0Click"
+      button-xp: "&l&9LORE XP&r{LINE}&0Click"
+      button-back: "&l&4TO RETURN&r{LINE}&0Click"
+      
+Messages:
+  error:
+    no-permission: "&cYou do not have sufficient permissions to perform this action!"
+    no-money: "&cYou do not have enough money to perform this action!"
+    no-xp: "&cYou do not have enough experience to perform this action!"
+    no-damage: "&cThis item is not damaged!"
+    no-item: "&cThis is not an item, exchange it for another."
+    lore-null: "&bYou didn't name the lore for this article...."
+    rename-null: "&bYou did not name this item..."
+
+  success:
+    repair-success: "&aYour repair was successful!"
+    repair-all-success: "&bAll your items have been repaired!"
+    repair-hand-success: "&bThe item in your hand has been repaired!"
+    # Use the key: {RENAME} to see the name of the renamed item
+    rename-success: "&aSuccessfully renamed the item to: &d{RENAME}"
+    # Use the key: {LORE} to see the name of the renamed item
+    lore-success: "&aCorrectly changed item lore to: &d{LORE}"

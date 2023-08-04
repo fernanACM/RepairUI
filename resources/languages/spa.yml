@@ -1,0 +1,134 @@
+#  ____                           _          _   _   ___ 
+# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
+# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
+# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
+# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
+#                |_|                                     
+#           by fernanACM
+# Repara y personaliza los nombres de tus objetos con RepairUI, para servidores PocketMine-MP 5.0
+
+# ¡NO MODIFICAR!
+language-version: "1.0.0"
+
+Forms:
+  RepairMenu:
+    title: "&l&dRepairUI"
+    content: "&eSelecciona tu opción preferida:"
+    button-repair: "&l&2REPARAR{LINE}&r&0Haga clic"
+    button-rename: "&l&2RENOMBRAR{LINE}&r&0Haga clic"
+    button-lore: "&l&2LORE{LINE}&r&0Haga clic"
+    button-exit: "&l&4CERRAR MENÚ{LINE}&r&0Haga clic"
+
+  RepairMoney:
+    title: "&l&dRepairUI&r &a-&l&c REPARAR-DINERO"
+    # Usa las claves: {BALANCE} para verificar tu dinero y {COST} para ver el precio del producto.
+    content-normal-mode: 
+      - "&b»Aquí puedes reparar tus objetos con tu dinero."
+      - "&e»Mi dinero: &a{BALANCE}$"
+      - "&e»Precio de reparación: &b{COST}$"
+      - "&e»Daño: &c{DAMAGE}"
+    # Usa las claves: {BALANCE} para verificar tu dinero y {COST} para ver el precio del producto, {DAMAGE} para ver el daño del objeto y {TOTAL} para verificar el precio total.
+    content-damage-mode:
+      - "&b»Aquí puedes reparar tus objetos con tu dinero."
+      - "&e»Mi dinero: &a{BALANCE}$"
+      - "&e»Precio por daño: &b{COST}$"
+      - "&e»Daño: &c{DAMAGE}" 
+      - "&c»Impuestos: &a{TOTAL}"
+    button-repair: "&3Reparar tu objeto{LINE}&0Haga clic"
+    button-back: "&4VOLVER{LINE}&0Haga clic"
+
+  RepairXP:
+    title: "&l&dRepairUI&r &a-&l&c REPARAR-XP"
+    # Usa las claves: {XP} para verificar tu experiencia y {COST} para ver el precio del producto.
+    content-normal-mode: 
+      - "&b»Aquí puedes reparar tus objetos con tu experiencia."
+      - "&e»Mi experiencia: &a{XP}lvl"
+      - "&e»Precio de reparación: &b{COST}lvl"
+      - "&e»Daño: &c{DAMAGE}"
+    # Usa las claves: {BALANCE} para verificar tu experiencia y {COST} para ver el precio del producto, {DAMAGE} para ver el daño del objeto y {TOTAL} para verificar el precio total.
+    content-damage-mode:
+      - "&b»Aquí puedes reparar tus objetos con tu experiencia."
+      - "&e»Mi experiencia: &a{XP}lvl"
+      - "&e»Precio por daño: &b{COST}lvl"
+      - "&e»Daño: &c{DAMAGE}" 
+      - "&c»Impuestos: &a{TOTAL}"
+    button-repair: "&3Reparar tu objeto{LINE}&0Haga clic"
+    button-back: "&4VOLVER{LINE}&0Haga clic"
+  RenameMoney:
+    title: "&l&dRepairUI&r &a-&l&c RENOMBRAR-DINERO"
+    # Usa las claves: {BALANCE} para verificar tu dinero y {COST} para ver el precio del producto.
+    content: 
+      - "&b»Aquí puedes cambiar el nombre de tus objetos con tu dinero." 
+      - "&e»Mi dinero: &a{BALANCE}$" 
+      - "&e»Costo de renombrar: &b{COST}$"
+    input1: "Escribe un nombre para tu objeto"
+    input2: "Ejemplo: SuperPro"
+
+  RenameXP:
+    title: "&l&dRepairUI&r &a-&l&c RENOMBRAR-XP"
+    # Usa las claves: {XP} para verificar tu experiencia y {COST} para ver el precio del producto.
+    content: 
+      - "&b»Aquí puedes cambiar el nombre de tus objetos con tu experiencia." 
+      - "&e»Mi experiencia: &a{XP}lvl" 
+      - "&e»Costo de renombrar: &b{COST}lvl"
+    input1: "Escribe un nombre para tu objeto."
+    input2: "Ejemplo: SuperSIPE"
+  
+  LoreMoney:
+    title: "&l&dRepairUI&r &a-&l&c LORE-DINERO"
+    # Usa las claves: {BALANCE} para verificar tu dinero y {COST} para ver el precio del producto.
+    content: 
+      - "&b»Aquí puedes cambiar el nombre de tus objetos con tu dinero." 
+      - "&e»Mi dinero: &a{BALANCE}$" 
+      - "&e»Costo de Lore: &b{COST}$"
+    input1: "Escribe el nombre del Lore para tu objeto"
+    input2: "Ejemplo: JonatanSipe{LINE}Okpe"
+
+  LoreXP:
+    title: "&l&dRepairUI &r &a-&l&c LORE-XP"
+    # Usa las claves: {XP} para verificar tu experiencia y {COST} para ver el precio del producto.
+    content: 
+      - "&b»Aquí puedes cambiar el nombre de tus objetos con tu experiencia." 
+      - "&e»Mi experiencia: &a{XP}lvl" 
+      - "&e»Costo de Lore: &b{COST}lvl"
+    input1: "Escribe el nombre del Lore para tu objeto"
+    input2: "Ejemplo: Nope{LINE}sipe"
+
+  CostForm:
+    Repair:
+      title: "&l&dRepairUI&r &a-&l&c REPARAR"
+      content: "&eSelecciona tu opción preferida:"
+      button-money: "&l&9REPARAR DINERO&r{LINE}&0Haga clic"
+      button-xp: "&l&9REPARAR XP&r{LINE}&0Haga clic"
+      button-back: "&l&4VOLVER&r{LINE}&0Haga clic"
+    Rename:
+      title: "&l&dRepairUI&r &a-&l&c RENOMBRAR"
+      content: "&l&dSelecciona tu opción preferida:"
+      button-money: "&l&9RENOMBRAR DINERO&r{LINE}&0Haga clic"
+      button-xp: "&l&9RENOMBRAR XP&r{LINE}&0Haga clic"
+      button-back: "&l&4VOLVER&r{LINE}&0Haga clic"
+    Lore:
+      title: "&l&dRepairUI&r &a-&l&c LORE"
+      content: "&eSelecciona tu opción preferida:"
+      button-money: "&l&9LORE DINERO&r{LINE}&0Haga clic"
+      button-xp: "&l&9LORE XP&r{LINE}&0Haga clic"
+      button-back: "&l&4VOLVER&r{LINE}&0Haga clic"
+      
+Messages:
+  error:
+    no-permission: "&c¡No tienes suficientes permisos para realizar esta acción!"
+    no-money: "&c¡No tienes suficiente dinero para realizar esta acción!"
+    no-xp: "&c¡No tienes suficiente experiencia para realizar esta acción!"
+    no-damage: "&c¡Este objeto no está dañado!"
+    no-item: "&cEsto no es un objeto, cámbialo por otro."
+    lore-null: "&bNo has nombrado el lore para este artículo..."
+    rename-null: "&bNo has nombrado este objeto..."
+
+  success:
+    repair-success: "&a¡La reparación ha sido exitosa!"
+    repair-all-success: "&b¡Todos tus objetos han sido reparados!"
+    repair-hand-success: "&b¡El objeto en tu mano ha sido reparado!"
+    # Usa la clave: {RENAME} para ver el nombre del objeto renombrado
+    rename-success: "&aNombre del objeto cambiado con éxito a: &d{RENAME}"
+    # Usa la clave: {LORE} para ver el nombre del objeto con el nuevo lore
+    lore-success: "&aEl lore del objeto ha sido cambiado con éxito a: &d{LORE}"

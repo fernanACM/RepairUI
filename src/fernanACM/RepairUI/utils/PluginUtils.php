@@ -1,55 +1,85 @@
 <?php
 
-#  ____                           _          _   _   ___ 
-# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
-# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
-# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
-# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
-#                |_|                                     
-#   Copyright [2022-2022] [fernanACM]
-
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-
-#       http://www.apache.org/licenses/LICENSE-2.0
-
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+#      _       ____   __  __ 
+#     / \     / ___| |  \/  |
+#    / _ \   | |     | |\/| |
+#   / ___ \  | |___  | |  | |
+#  /_/   \_\  \____| |_|  |_|
+# The creator of this plugin was fernanACM.
+# https://github.com/fernanACM
 
 declare(strict_types=1);
 
 namespace fernanACM\RepairUI\utils;
 
 use pocketmine\player\Player;
-use pocketmine\Server;
 
 use pocketmine\utils\TextFormat;
 
-use pocketmine\world\Position;
-use ReflectionClass;
+use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 
-class PluginUtils {
+class PluginUtils{
 
-	public static function PlaySound(Player $player, string $sound, $volume = 1, $pitch = 1) {
-		$packet = new PlaySoundPacket();
-		$packet->x = $player->getPosition()->getX();
-		$packet->y = $player->getPosition()->getY();
-		$packet->z = $player->getPosition()->getZ();
-		$packet->soundName = $sound;
-		$packet->volume = 1;
-		$packet->pitch = 1;
-		$player->getNetworkSession()->sendDataPacket($packet);
-	}
-
-	public static function codeUtil(Player $player, string $message): string{
-       $replacements = [
-            "{LINE}" => "\n",
+    /**
+     * @param Player $player
+     * @param string $sound
+     * @param int $volume
+     * @param float $pitch
+     * @return void
+     */
+    public static function PlaySound(Player $player, string $sound, int $volume, float $pitch){
+        $packet = new PlaySoundPacket();
+        $packet->x = $player->getPosition()->getX();
+        $packet->y = $player->getPosition()->getY();
+        $packet->z = $player->getPosition()->getZ();
+        $packet->soundName = $sound;
+        $packet->volume = $volume;
+        $packet->pitch = $pitch;
+        $player->getNetworkSession()->sendDataPacket($packet);
+    }
+    
+    /**
+     * @param Player $player
+     * @param string $soundName
+     * @param int $volume
+     * @param float $pitch
+     * @return void
+     */
+    public static function BroadSound(Player $player, string $soundName, int $volume, float $pitch){
+        $packet = new PlaySoundPacket();
+        $packet->soundName = $soundName;
+        $position = $player->getPosition();
+        $packet->x = $position->getX();
+        $packet->y = $position->getY();
+        $packet->z = $position->getZ();
+        $packet->volume = $volume;
+        $packet->pitch = $pitch;
+        $world = $position->getWorld();
+        NetworkBroadcastUtils::broadcastPackets($world->getPlayers(), [$packet]);
+    }
+    
+    /**
+     * @param Player $player
+     * @param string $message
+     * @return string
+     */
+    public static function codeUtil(Player $player, string $message): string{
+        $replacements = [
+            "{LINE}" => "\n§r",
             "{NAME}" => $player->getName(),
+            "{PLAYER}" => $player->getName(),
+            "&" => "§",
+            "{HEALTH}" => $player->getHealth(),
+            "{MAX_HEALTH}" => $player->getMaxHealth(),
+            "{FOOD}" => $player->getHungerManager()->getFood(),
+            "{MAX_FOOD}" => $player->getHungerManager()->getMaxFood(),
+            "{PING}" => $player->getNetworkSession()->getPing(),
+            "{WORLD_NAME}" => $player->getWorld()->getFolderName(),
+            "{ONLINE}" => count($player->getServer()->getOnlinePlayers()),
+            "{MAX_ONLINE}" => $player->getServer()->getMaxPlayers(),
+            "{TPS}" => $player->getServer()->getTicksPerSecond(),
             # Colors
             "{BLACK}" => TextFormat::BLACK,
             "{DARK_BLUE}" => TextFormat::DARK_BLUE,
@@ -72,6 +102,17 @@ class PluginUtils {
             "{BOLD}" => TextFormat::BOLD,
             "{RESET}" => TextFormat::RESET
         ];
-        return str_replace(array_keys($replacements), $replacements, $message);
+        return strtr($message, $replacements);
+    }
+    
+    /**
+     * @param Player $player
+     * @param integer $effectId
+     * @return void
+     */
+    public static function AminationTexture(Player $player, int $effectId){
+        $packet = new OnScreenTextureAnimationPacket();
+        $packet->effectId = $effectId;
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 }

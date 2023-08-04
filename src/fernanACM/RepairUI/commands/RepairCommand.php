@@ -1,73 +1,75 @@
 <?php
 
-#  ____                           _          _   _   ___ 
-# |  _ \    ___   _ __     __ _  (_)  _ __  | | | | |_ _|
-# | |_) |  / _ \ | '_ \   / _` | | | | '__| | | | |  | | 
-# |  _ <  |  __/ | |_) | | (_| | | | | |    | |_| |  | | 
-# |_| \_\  \___| | .__/   \__,_| |_| |_|     \___/  |___|
-#                |_|                                     
-#   Copyright [2022-2022] [fernanACM]
-
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-
-#       http://www.apache.org/licenses/LICENSE-2.0
-
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+#      _       ____   __  __ 
+#     / \     / ___| |  \/  |
+#    / _ \   | |     | |\/| |
+#   / ___ \  | |___  | |  | |
+#  /_/   \_\  \____| |_|  |_|
+# The creator of this plugin was fernanACM.
+# https://github.com/fernanACM
 
 namespace fernanACM\RepairUI\commands;
 
-use pocketmine\Server;
 use pocketmine\player\Player;
 
-use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 # Lib - Commando
 use CortexPE\Commando\BaseCommand;
 # My files - SubCommands
 use fernanACM\RepairUI\commands\subcommands\HelpSubCommand;
+use fernanACM\RepairUI\commands\subcommands\LoreSubCommand;
+use fernanACM\RepairUI\commands\subcommands\RenameSubCommand;
 use fernanACM\RepairUI\commands\subcommands\RepairAllSubCommand;
 use fernanACM\RepairUI\commands\subcommands\RepairHandSubCommand;
 # My files
 use fernanACM\RepairUI\RP;
+use fernanACM\RepairUI\utils\PermissionsUtils;
 use fernanACM\RepairUI\utils\PluginUtils;
+use fernanACM\RepairUI\utils\WordUtils;
 
 class RepairCommand extends BaseCommand{
 
-	protected function prepare(): void{
-        $this->setPermission(
-        	"repairui.cmd.acm;" .
-            "repairui.help.acm;" .
-        	"repairui.repair.all;" .
-        	"repairui.repair.hand" 
-    );
+    public function __construct(){
+        parent::__construct(RP::getInstance(), "repairui", "Open RepairUI by fernanACM", ["rp", "repair", "fix", "sipe"]);
+        $this->setPermission(PermissionsUtils::CMD);
+    }
 
-        $this->registerSubCommand(new HelpSubCommand("help", "RepairUI command list by fernanACM", ["list"]));
-        if(RP::getInstance()->config->getNested("Commands.all")){
-            $this->registerSubCommand(new RepairAllSubCommand("all", "Repair items in your entire inventory", ["a"]));
+    /**
+     * @return void
+     */
+	protected function prepare(): void{
+        $this->registerSubCommand(new HelpSubCommand);
+        if(RP::getInstance()->config->getNested("Settings.Commands.all")){
+            $this->registerSubCommand(new RepairAllSubCommand);
         }
-        if(RP::getInstance()->config->getNested("Commands.hand")){
-            $this->registerSubCommand(new RepairHandSubCommand("hand", "Repair the items in your hand", ["h"]));
+        if(RP::getInstance()->config->getNested("Settings.Commands.hand")){
+            $this->registerSubCommand(new RepairHandSubCommand);
+        }
+        if(RP::getInstance()->config->getNested("Settings.Commands.lore")){
+            $this->registerSubCommand(new LoreSubCommand);
+        }
+        if(RP::getInstance()->config->getNested("Settings.Commands.rename")){
+            $this->registerSubCommand(new RenameSubCommand);
         }
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string $aliasUsed
+     * @param array $args
+     * @return void
+     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void{
-    	if (!$sender instanceof Player) {
-              $sender->sendMessage("Use this command in-game");
-              return;
+    	if(!$sender instanceof Player){
+            $sender->sendMessage("Use this command in-game");
+            return;
         }
-        if($sender->hasPermission("repairui.cmd.acm")){
-         	   RP::getInstance()->repairmenu->RepairMenu($sender);
-               PluginUtils::PlaySound($sender, "random.pop2", 1, 4.5);
-        }else{
-            $prefix = RP::getInstance()->getMessage($sender, "Prefix");
-        	$sender->sendMessage($prefix . RP::getInstance()->getMessage($sender, "Messages.no-permission"));
+        if(!$sender->hasPermission(PermissionsUtils::CMD)){
+            $sender->sendMessage(RP::Prefix(). RP::getMessage($sender, WordUtils::NO_PERMISSION));
             PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
+            return;
         }
+        RP::getInstance()->getRepairMenu()->getRepairMenu($sender);
+        PluginUtils::PlaySound($sender, "random.pop2", 1, 1);
     }
 }
