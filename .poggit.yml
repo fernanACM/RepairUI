@@ -18,7 +18,7 @@ projects:
       - src: ACM-PocketMine-MP/libPiggyUpdateChecker/libPiggyUpdateChecker
         version: ^2.0.0
       - src: DaPigGuy/libPiggyEconomy/libPiggyEconomy
-        version: ^3.0.2
+        version: ^3.0.3
         branch: "master"
     lint:
       phpstan: false
