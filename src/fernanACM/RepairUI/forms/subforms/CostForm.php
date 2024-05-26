@@ -75,9 +75,9 @@ final class CostForm{
 		});
 		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_TITLE));
 		$form->setContent(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_CONTENT));
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_MONEY),1,"https://i.imgur.com/0S37esk.png");
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_XP),1,"https://i.imgur.com/PR3eTLe.png");
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_BACK),1,"https://i.imgur.com/YzfZ302.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_MONEY),1,"https://i.postimg.cc/BZwFt8dS/ad5ca2.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_XP),1,"https://i.postimg.cc/MKCjbC6g/ecbc6.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_BACK),1,"https://i.postimg.cc/VN1r2XbR/f2908e.png");
 		$player->sendForm($form);
 	}
 
@@ -121,9 +121,9 @@ final class CostForm{
 		});
 		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_TITLE));
 		$form->setContent(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_CONTENT));
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_MONEY),1,"https://i.imgur.com/0S37esk.png");
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_XP),1,"https://i.imgur.com/PR3eTLe.png");
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_BACK),1,"https://i.imgur.com/YzfZ302.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_MONEY),1,"https://i.postimg.cc/BZwFt8dS/ad5ca2.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_XP),1,"https://i.postimg.cc/MKCjbC6g/ecbc6.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_BACK),1,"https://i.postimg.cc/VN1r2XbR/f2908e.png");
 		$player->sendForm($form);
 	}
 
@@ -168,9 +168,9 @@ final class CostForm{
 		});
 		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_TITLE));
 		$form->setContent(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_CONTENT));
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_MONEY),1,"https://i.imgur.com/0S37esk.png");
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_XP),1,"https://i.imgur.com/PR3eTLe.png");
-		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_BACK),1,"https://i.imgur.com/YzfZ302.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_MONEY),1,"https://i.postimg.cc/BZwFt8dS/ad5ca2.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_XP),1,"https://i.postimg.cc/MKCjbC6g/ecbc6.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_BACK),1,"https://i.postimg.cc/VN1r2XbR/f2908e.png");
 		$player->sendForm($form);
 	}
 }
