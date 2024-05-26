@@ -8,6 +8,8 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\commands;
 
 use pocketmine\player\Player;
@@ -23,15 +25,16 @@ use fernanACM\RepairUI\commands\subcommands\RepairAllSubCommand;
 use fernanACM\RepairUI\commands\subcommands\RepairHandSubCommand;
 # My files
 use fernanACM\RepairUI\RP;
-use fernanACM\RepairUI\utils\PermissionsUtils;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\Language;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\permissions\Perms;
 
 class RepairCommand extends BaseCommand{
 
     public function __construct(){
         parent::__construct(RP::getInstance(), "repairui", "Open RepairUI by fernanACM", ["rp", "repair", "fix", "sipe"]);
-        $this->setPermission(PermissionsUtils::CMD);
+        $this->setPermission(Perms::CMD);
     }
 
     /**
@@ -39,16 +42,16 @@ class RepairCommand extends BaseCommand{
      */
 	protected function prepare(): void{
         $this->registerSubCommand(new HelpSubCommand);
-        if(RP::getInstance()->config->getNested("Settings.Commands.all")){
+        if(boolval(RP::getInstance()->config->getNested("Settings.Commands.all", true))){
             $this->registerSubCommand(new RepairAllSubCommand);
         }
-        if(RP::getInstance()->config->getNested("Settings.Commands.hand")){
+        if(boolval(RP::getInstance()->config->getNested("Settings.Commands.hand", true))){
             $this->registerSubCommand(new RepairHandSubCommand);
         }
-        if(RP::getInstance()->config->getNested("Settings.Commands.lore")){
+        if(boolval(RP::getInstance()->config->getNested("Settings.Commands.lore", true))){
             $this->registerSubCommand(new LoreSubCommand);
         }
-        if(RP::getInstance()->config->getNested("Settings.Commands.rename")){
+        if(boolval(RP::getInstance()->config->getNested("Settings.Commands.rename", true))){
             $this->registerSubCommand(new RenameSubCommand);
         }
     }
@@ -64,12 +67,12 @@ class RepairCommand extends BaseCommand{
             $sender->sendMessage("Use this command in-game");
             return;
         }
-        if(!$sender->hasPermission(PermissionsUtils::CMD)){
-            $sender->sendMessage(RP::Prefix(). RP::getMessage($sender, WordUtils::NO_PERMISSION));
+        if(!$sender->hasPermission(Perms::CMD)){
+            $sender->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
             PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
             return;
         }
-        RP::getInstance()->getRepairMenu()->getRepairMenu($sender);
+        RP::getInstance()->getFormManager()->getMenu()->open($sender);
         PluginUtils::PlaySound($sender, "random.pop2", 1, 1);
     }
 }

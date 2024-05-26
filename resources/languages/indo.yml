@@ -8,7 +8,7 @@
 # Perbaiki dan sesuaikan nama item Anda dengan RepairUI, untuk server PocketMine-MP 5.0
 
 # JANGAN DIUBAH!
-language-version: "1.0.0"
+language-version: "2.0.0"
 
 Forms:
   RepairMenu:
@@ -17,7 +17,7 @@ Forms:
     button-repair: "&l&2REPARASI{LINE}&r&0Klik"
     button-rename: "&l&2GANTI NAMA{LINE}&r&0Klik"
     button-lore: "&l&2LORE{LINE}&r&0Klik"
-    button-exit: "&l&4TUTUP MENU{LINE}&r&0Klik"
+    button-close: "&l&4TUTUP MENU{LINE}&r&0Klik"
 
   RepairMoney:
     title: "&l&dRepairUI&r &a-&l&c REPARASI-UANG"
@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4KEMBALI&r{LINE}&0Klik"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c GANTI NAMA"
-      content: "&l&dPilih pilihan yang Anda inginkan:"
+      content: "&ePilih pilihan yang Anda inginkan:"
       button-money: "&l&9GANTI NAMA UANG&r{LINE}&0Klik"
       button-xp: "&l&9GANTI NAMA XP&r{LINE}&0Klik"
       button-back: "&l&4KEMBALI&r{LINE}&0Klik"
@@ -123,6 +123,7 @@ Messages:
     no-item: "&cIni bukanlah sebuah barang, tukarkan dengan yang lain."
     lore-null: "&bAnda tidak memberi nama lore untuk artikel ini...."
     rename-null: "&bAnda tidak memberi nama pada barang ini..."
+    custom-name-provider: "&cTidak ada Mode seperti itu untuk nama khusus!"
 
   success:
     repair-success: "&aPerbaikan berhasil!"

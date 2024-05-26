@@ -8,6 +8,8 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\commands\subcommands;
 
 use pocketmine\player\Player;
@@ -18,16 +20,17 @@ use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\args\TextArgument;
 # My files
 use fernanACM\RepairUI\RP;
-use fernanACM\RepairUI\utils\PermissionsUtils;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\Language;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\permissions\Perms;
 use fernanACM\RepairUI\manager\RepairManager;
 
 class LoreSubCommand extends BaseSubCommand{
 
     public function __construct(){
         parent::__construct("lore", "", []);
-        $this->setPermission(PermissionsUtils::LORE_CMD);
+        $this->setPermission(Perms::LORE_CMD);
     }
 
     /**
@@ -48,22 +51,16 @@ class LoreSubCommand extends BaseSubCommand{
             $sender->sendMessage("Use this command in-game");
             return;
         }
-        if(!$sender->hasPermission(PermissionsUtils::LORE_CMD)){
-            $sender->sendMessage(RP::Prefix(). WordUtils::NO_PERMISSION);
+        if(!$sender->hasPermission(Perms::LORE_CMD)){
+            $sender->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
             PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
             return;
         }
         if(!isset($args["text"])){
-            $sender->sendMessage(RP::Prefix(). "§c/repairui lore <lore>");
+            $sender->sendMessage(RP::getPrefix(). "§cUse: /repairui lore <lore>");
             PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
             return;
         }
-        $item = $sender->getInventory()->getItemInHand();
-        if($item->isNull()){
-            $sender->sendMessage(RP::Prefix() . RP::getMessage($sender, WordUtils::NO_ITEM));
-            PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
-            return;
-        }
-        RepairManager::getInstance()->sendRenamedItem($sender, $item, RepairManager::LORE_MODE, $args["text"]);
+        RepairManager::getInstance()->sendRenamedItem($sender, null, RepairManager::LORE_MODE, $args["text"]);
     }
 }

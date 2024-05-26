@@ -17,16 +17,17 @@ use pocketmine\command\CommandSender;
 use CortexPE\Commando\BaseSubCommand;
 # My files
 use fernanACM\RepairUI\RP;
-use fernanACM\RepairUI\utils\PermissionsUtils;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\Language;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\permissions\Perms;
 use fernanACM\RepairUI\manager\RepairManager;
 
 class RepairAllSubCommand extends BaseSubCommand{
 
     public function __construct(){
         parent::__construct("all", "", []);
-        $this->setPermission(PermissionsUtils::REPAIR_ALL);
+        $this->setPermission(Perms::REPAIR_ALL);
     }
 
     /**
@@ -46,8 +47,8 @@ class RepairAllSubCommand extends BaseSubCommand{
             $sender->sendMessage("Use this command in-game");
             return;
         }
-        if(!$sender->hasPermission(PermissionsUtils::REPAIR_ALL)){
-            $sender->sendMessage(RP::Prefix(). WordUtils::NO_PERMISSION);
+        if(!$sender->hasPermission(Perms::REPAIR_ALL)){
+            $sender->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
             PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
             return;
         }

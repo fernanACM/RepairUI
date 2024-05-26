@@ -8,69 +8,76 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\forms\subforms;
 
 use pocketmine\player\Player;
+
+use pocketmine\utils\SingletonTrait;
 
 use Vecnavium\FormsUI\SimpleForm;
 
 use fernanACM\RepairUI\RP;
 use fernanACM\RepairUI\forms\RepairMenu;
-use fernanACM\RepairUI\utils\PermissionsUtils;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\Language;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\permissions\Perms;
 
-class CostForm{
+final class CostForm{
+	use SingletonTrait{
+		setInstance as protected;
+		reset as protected;
+	}
 
-	/** @var CostForm|null $instance */
-	private static ?CostForm $instance = null;
-
-	private function __construct(){
+	public function __construct(){
+		self::setInstance($this);
 	}
 
 	/**
 	 * @param Player $player
 	 * @return void
 	 */
-	public function getRepairCost(Player $player): void{
+	public function repair(Player $player): void{
 		$form = new SimpleForm(function(Player $player, $data){
 			if(is_null($data)){
-				RepairMenu::getInstance()->getRepairMenu($player);
+				RepairMenu::getInstance()->open($player);
 				PluginUtils::PlaySound($player, "random.pop2", 1, 1.7);
 				return true;
 			}
 			switch($data){
 				case 0: // MONEY
-					if(!$player->hasPermission(PermissionsUtils::REPAIR_MONEY)){
-						$player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_PERMISSION));
+					if(!$player->hasPermission(Perms::REPAIR_MONEY)){
+						$player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
 						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
 						return;
 					}
-					RepairForm::getInstance()->getRepairMoney($player);
+					RepairForm::getInstance()->money($player);
 					PluginUtils::PlaySound($player, "random.pop", 1, 1);
 				break;
 
 				case 1: // XP
-					if(!$player->hasPermission(PermissionsUtils::REPAIR_MONEY)){
-						$player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_PERMISSION));
+					if(!$player->hasPermission(Perms::REPAIR_MONEY)){
+						$player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
 						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
 						return;
 					}
-					RepairForm::getInstance()->getRepairXP($player);
+					RepairForm::getInstance()->xp($player);
 					PluginUtils::PlaySound($player, "random.pop", 1, 1);
 				break;
 
 				case 2: // RETURN
-					RepairMenu::getInstance()->getRepairMenu($player);
+					RepairMenu::getInstance()->open($player);
 					PluginUtils::PlaySound($player, "random.pop2", 1, 1.7);
 				break;
 			}
 		});
-		$form->setTitle(RP::getMessage($player, "Forms.CostForm.Repair.title"));
-		$form->setContent(RP::getMessage($player, "Forms.CostForm.Repair.content"));
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Repair.button-money"),1,"https://i.imgur.com/0S37esk.png");
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Repair.button-xp"),1,"https://i.imgur.com/PR3eTLe.png");
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Repair.button-back"),1,"https://i.imgur.com/YzfZ302.png");
+		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_TITLE));
+		$form->setContent(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_CONTENT));
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_MONEY),1,"https://i.postimg.cc/BZwFt8dS/ad5ca2.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_XP),1,"https://i.postimg.cc/MKCjbC6g/ecbc6.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_REPAIR_BUTTON_BACK),1,"https://i.postimg.cc/VN1r2XbR/f2908e.png");
 		$player->sendForm($form);
 	}
 
@@ -78,45 +85,45 @@ class CostForm{
 	 * @param Player $player
 	 * @return void
 	 */
-	public function getRenameCost(Player $player): void{
+	public function rename(Player $player): void{
 		$form = new SimpleForm(function(Player $player, $data){
 			if(is_null($data)){
-				RepairMenu::getInstance()->getRepairMenu($player);
+				RepairMenu::getInstance()->open($player);
 				PluginUtils::PlaySound($player, "random.pop2", 1, 1.7);
 				return true;
 			}
 			switch($data){
 				case 0: // MONEY
-					if(!$player->hasPermission(PermissionsUtils::RENAME_MONEY)){
-						$player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_PERMISSION));
+					if(!$player->hasPermission(Perms::RENAME_MONEY)){
+						$player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
 						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
 						return;
 					}
-					RenameForm::getInstance()->getRenameMoney($player);
+					RenameForm::getInstance()->money($player);
 					PluginUtils::PlaySound($player, "random.pop", 1, 1);
 				break;
 
 				case 1: // XP
-					if(!$player->hasPermission(PermissionsUtils::RENAME_MONEY)){
-						$player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_PERMISSION));
+					if(!$player->hasPermission(Perms::RENAME_MONEY)){
+						$player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
 						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
 						return;
 					}
-					RenameForm::getInstance()->getRenameXP($player);
+					RenameForm::getInstance()->xp($player);
 					PluginUtils::PlaySound($player, "random.pop", 1, 1);
 				break;
 
 				case 2: // RETURN
-					RepairMenu::getInstance()->getRepairMenu($player);
+					RepairMenu::getInstance()->open($player);
 					PluginUtils::PlaySound($player, "random.pop2", 1, 1.7);
 				break;
 			}
 		});
-		$form->setTitle(RP::getMessage($player, "Forms.CostForm.Rename.title"));
-		$form->setContent(RP::getMessage($player, "Forms.CostForm.Rename.content"));
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Rename.button-money"),1,"https://i.imgur.com/0S37esk.png");
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Rename.button-xp"),1,"https://i.imgur.com/PR3eTLe.png");
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Rename.button-back"),1,"https://i.imgur.com/YzfZ302.png");
+		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_TITLE));
+		$form->setContent(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_CONTENT));
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_MONEY),1,"https://i.postimg.cc/BZwFt8dS/ad5ca2.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_XP),1,"https://i.postimg.cc/MKCjbC6g/ecbc6.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_RENAME_BUTTON_BACK),1,"https://i.postimg.cc/VN1r2XbR/f2908e.png");
 		$player->sendForm($form);
 	}
 
@@ -124,54 +131,46 @@ class CostForm{
 	 * @param Player $player
 	 * @return void
 	 */
-	public function getLoreCost(Player $player): void{
+	public function lore(Player $player): void{
 		$form = new SimpleForm(function(Player $player, $data){
 			if(is_null($data)){
-				RepairMenu::getInstance()->getRepairMenu($player);
+				RepairMenu::getInstance()->open($player);
 				PluginUtils::PlaySound($player, "random.pop2", 1, 1.7);
 				return true;
 			}
 			switch($data){
 				case 0: // MONEY
-					if(!$player->hasPermission(PermissionsUtils::LORE_MONEY)){
-						$player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_PERMISSION));
+					if(!$player->hasPermission(Perms::LORE_MONEY)){
+						$player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
 						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
 						return;
 					}
-					LoreForm::getInstance()->getLoreMoney($player);
+					LoreForm::getInstance()->money($player);
 					PluginUtils::PlaySound($player, "random.pop", 1, 1);
 				break;
 
 				case 1: // XP
-					if(!$player->hasPermission(PermissionsUtils::LORE_MONEY)){
-						$player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_PERMISSION));
+					if(!$player->hasPermission(Perms::LORE_MONEY)){
+						$player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
 						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
 						return;
 					}
-					LoreForm::getInstance()->getLoreXP($player);
+					LoreForm::getInstance()->xp($player);
 					PluginUtils::PlaySound($player, "random.pop", 1, 1);
 				break;
 
 				case 2: // RETURN
-					RepairMenu::getInstance()->getRepairMenu($player);
+					RepairMenu::getInstance()->open($player);
 					PluginUtils::PlaySound($player, "random.pop2", 1, 1.7);
 				break;
 
 			}
 		});
-		$form->setTitle(RP::getMessage($player, "Forms.CostForm.Lore.title"));
-		$form->setContent(RP::getMessage($player, "Forms.CostForm.Lore.content"));
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Lore.button-money"),1,"https://i.imgur.com/0S37esk.png");
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Lore.button-xp"),1,"https://i.imgur.com/PR3eTLe.png");
-		$form->addButton(RP::getMessage($player, "Forms.CostForm.Lore.button-back"),1,"https://i.imgur.com/YzfZ302.png");
+		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_TITLE));
+		$form->setContent(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_CONTENT));
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_MONEY),1,"https://i.postimg.cc/BZwFt8dS/ad5ca2.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_XP),1,"https://i.postimg.cc/MKCjbC6g/ecbc6.png");
+		$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_COST_LORE_BUTTON_BACK),1,"https://i.postimg.cc/VN1r2XbR/f2908e.png");
 		$player->sendForm($form);
-	}
-
-	/**
-	 * @return self
-	 */
-	public static function getInstance(): self{
-		if(is_null(self::$instance)) self::$instance = new self();
-		return self::$instance;
 	}
 }

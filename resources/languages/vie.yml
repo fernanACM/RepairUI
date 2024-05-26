@@ -8,7 +8,7 @@
 # Sửa chữa và tùy chỉnh tên mục của bạn với RepairUI, dành cho máy chủ PocketMine-MP 5.0
 
 # KHÔNG CHẠM!
-language-version: "1.0.0"
+language-version: "2.0.0"
 
 Forms:
   RepairMenu:
@@ -17,7 +17,7 @@ Forms:
     button-repair: "&l&2SỬA CHỮA{LINE}&r&0Nhấp"
     button-rename: "&l&2ĐỔI TÊN{LINE}&r&0Nhấp"
     button-lore: "&l&2LORE{LINE}&r&0Nhấp"
-    button-exit: "&l&4ĐÓNG MENU{LINE}&r&0Nhấp"
+    button-close: "&l&4ĐÓNG MENU{LINE}&r&0Nhấp"
 
   RepairMoney:
     title: "&l&dRepairUI&r &a-&l&c SỬA CHỮA-TIỀN"
@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c ĐỔI TÊN"
-      content: "&l&dChọn tùy chọn ưa thích của bạn:"
+      content: "&eChọn tùy chọn ưa thích của bạn:"
       button-money: "&l&9ĐỔI TÊN TIỀN&r{LINE}&0Nhấp"
       button-xp: "&l&9ĐỔI TÊN XP&r{LINE}&0Nhấp"
       button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"
@@ -123,6 +123,7 @@ Messages:
     no-item: "&cĐây không phải là một mục, hãy đổi sang mục khác."
     lore-null: "&bBạn chưa đặt tên cho lore của bài viết này...."
     rename-null: "&bBạn chưa đặt tên cho mục này..."
+    custom-name-provider: "&cKhông có Chế độ nào cho tên tùy chỉnh!"
 
   success:
     repair-success: "&aSửa chữa thành công!"
