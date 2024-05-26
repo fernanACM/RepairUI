@@ -43,7 +43,7 @@ class LoreForm{
 	public function money(Player $player): void{
         $cost = intval(RP::getInstance()->config->getNested("RepairCost.Lore.money-cost"));
         $item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
@@ -87,7 +87,7 @@ class LoreForm{
         $cost = intval(RP::getInstance()->config->getNested("RepairCost.Lore.xp-cost"));
         $myXp = intval($player->getXpManager()->getXpProgress());
         $item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;

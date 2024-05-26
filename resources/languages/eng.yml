@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4TO RETURN&r{LINE}&0Click"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c RENAME"
-      content: "&l&dSelect your preferred option:"
+      content: "&eSelect your preferred option:"
       button-money: "&l&9RENAME MONEY&r{LINE}&0Click"
       button-xp: "&l&9RENAME XP&r{LINE}&0Click"
       button-back: "&l&4TO RETURN&r{LINE}&0Click"

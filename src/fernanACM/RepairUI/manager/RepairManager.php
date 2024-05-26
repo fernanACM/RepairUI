@@ -21,6 +21,7 @@ use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\item\Tool;
+use pocketmine\item\VanillaItems;
 
 use fernanACM\RepairUI\RP;
 use fernanACM\RepairUI\utils\PluginUtils;
@@ -38,6 +39,29 @@ final class RepairManager{
 
     public function __construct(){
         self::setInstance($this);
+    }
+
+    /**
+     * @param Item $item
+     * @return boolean
+     */
+    public function isItem(Item $item): bool{
+        return $item instanceof Durable || $item instanceof Tool || $item instanceof Armor;
+    }
+
+    /**
+     * @param Player|null $player
+     * @param Item|null $item
+     * @return boolean
+     */
+    public function isItemNull(?Player $player = null, ?Item $item = null): bool{
+        if(!is_null($player)){
+            $itemInHand = $player->getInventory()->getItemInHand();
+            return $itemInHand->isNull() || $itemInHand->equals(VanillaItems::AIR());;
+        }elseif(!is_null($item)){
+            return $item->isNull() || $item->equals(VanillaItems::AIR());
+        }
+        return false;
     }
 
     /**
@@ -124,12 +148,12 @@ final class RepairManager{
      */
     public function sendRepairedItem(Player $player, ?Item $item = null, ?callable $callable = null): void{
         $newItem = $item ?? $player->getInventory()->getItemInHand();
-        if($newItem->isNull() || (!($newItem instanceof Durable) && !($newItem instanceof Tool) && !($newItem instanceof Armor))){
+        if(!($newItem instanceof Durable) || !$this->isItem($newItem)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
         }
-        if($newItem->getDamage() < 0){
+        if($newItem->getDamage() <= 0){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_DAMAGE));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
@@ -151,7 +175,7 @@ final class RepairManager{
      */
     public function sendRenamedItem(Player $player, ?Item $item, string $mode, string $customName, ?callable $callable = null): void{
         $newItem = $item ?? $player->getInventory()->getItemInHand();
-        if($newItem->isNull()){
+        if($this->isItemNull($player)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
@@ -197,22 +221,19 @@ final class RepairManager{
      */
     public function sendInventoryAllRepaired(Player $player, ?callable $callable = null): void{
         foreach($player->getInventory()->getContents() as $slot => $item){
-            if(!$item instanceof Durable)continue;
-            if(!$item instanceof Tool && !$item instanceof Armor)continue;
+            if(!($item instanceof Durable) || $this->isItem($item))continue;
             if($item->getDamage() > 0){
                 $player->getInventory()->setItem($slot, $item->setDamage(0));
             }
         }
         foreach($player->getOffHandInventory()->getContents() as $slot => $offHanditem){
-            if(!$offHanditem instanceof Durable)continue;
-            if(!$offHanditem instanceof Tool && !$offHanditem instanceof Armor)continue;
+            if(!($offHanditem instanceof Durable) || $this->isItem($offHanditem))continue;
             if($offHanditem->getDamage() > 0){
                 $player->getOffHandInventory()->setItem($slot, $offHanditem->setDamage(0));
             }
         }
         foreach($player->getArmorInventory()->getContents() as $armorSlot => $armor){
-            if(!$armor instanceof Durable)continue;
-            if(!$armor instanceof Tool && !$armor instanceof Armor)continue;
+            if(!($armor instanceof Durable) || $this->isItem($armor))continue;
             if($armor->getDamage() > 0){
                 $player->getArmorInventory()->setItem($armorSlot, $armor->setDamage(0));
             }

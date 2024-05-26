@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4VOLVER&r{LINE}&0Haga clic"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c RENOMBRAR"
-      content: "&l&dSelecciona tu opción preferida:"
+      content: "&eSelecciona tu opción preferida:"
       button-money: "&l&9RENOMBRAR DINERO&r{LINE}&0Haga clic"
       button-xp: "&l&9RENOMBRAR XP&r{LINE}&0Haga clic"
       button-back: "&l&4VOLVER&r{LINE}&0Haga clic"

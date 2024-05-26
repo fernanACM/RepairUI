@@ -40,7 +40,7 @@ final class RepairMenu{
 	 */
 	public function open(Player $player): void{
 		$item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;

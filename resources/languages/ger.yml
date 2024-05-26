@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4ZURÜCK&r{LINE}&0Klicken"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c UMBENENNEN"
-      content: "&l&dWählen Sie Ihre bevorzugte Option:"
+      content: "&eWählen Sie Ihre bevorzugte Option:"
       button-money: "&l&9UMBENENNEN GELD&r{LINE}&0Klicken"
       button-xp: "&l&9UMBENENNEN XP&r{LINE}&0Klicken"
       button-back: "&l&4ZURÜCK&r{LINE}&0Klicken"

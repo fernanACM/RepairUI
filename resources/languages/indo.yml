@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4KEMBALI&r{LINE}&0Klik"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c GANTI NAMA"
-      content: "&l&dPilih pilihan yang Anda inginkan:"
+      content: "&ePilih pilihan yang Anda inginkan:"
       button-money: "&l&9GANTI NAMA UANG&r{LINE}&0Klik"
       button-xp: "&l&9GANTI NAMA XP&r{LINE}&0Klik"
       button-back: "&l&4KEMBALI&r{LINE}&0Klik"

@@ -20,7 +20,7 @@ use fernanACM\RepairUI\forms\subforms\LoreForm;
 use fernanACM\RepairUI\forms\subforms\RenameForm;
 use fernanACM\RepairUI\forms\subforms\CostForm;
 
-final class FormManeger{
+final class FormManager{
     use SingletonTrait{
 		setInstance as protected;
 		reset as protected;

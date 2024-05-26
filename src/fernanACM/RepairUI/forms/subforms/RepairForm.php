@@ -46,7 +46,7 @@ final class RepairForm{
         $cost = intval(RP::getInstance()->config->getNested("RepairCost.Repair.money-cost"));
         $mode = boolval(RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode"));
         $item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item) || !RepairManager::getInstance()->isItem($item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
@@ -101,7 +101,7 @@ final class RepairForm{
         $cost = intval(RP::getInstance()->config->getNested("RepairCost.Repair.xp-cost"));
         $mode = boolval(RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode"));
         $item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item) || !RepairManager::getInstance()->isItem($item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;

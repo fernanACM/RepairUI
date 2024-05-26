@@ -103,7 +103,7 @@ Forms:
       button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"
     Rename:
       title: "&l&dRepairUI&r &a-&l&c ĐỔI TÊN"
-      content: "&l&dChọn tùy chọn ưa thích của bạn:"
+      content: "&eChọn tùy chọn ưa thích của bạn:"
       button-money: "&l&9ĐỔI TÊN TIỀN&r{LINE}&0Nhấp"
       button-xp: "&l&9ĐỔI TÊN XP&r{LINE}&0Nhấp"
       button-back: "&l&4TRỞ LẠI&r{LINE}&0Nhấp"

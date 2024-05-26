@@ -43,7 +43,7 @@ final class RenameForm{
 	public function money(Player $player): void{
         $cost = intval(RP::getInstance()->config->getNested("RepairCost.Rename.money-cost"));
         $item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
@@ -87,7 +87,7 @@ final class RenameForm{
         $cost = intval(RP::getInstance()->config->getNested("RepairCost.Rename.xp-cost"));
         $myXp = intval($player->getXpManager()->getXpProgress());
         $item = $player->getInventory()->getItemInHand();
-        if($item->isNull()){
+        if(RP::getInstance()->getRepairManager()->isItemNull(null, $item)){
             $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;

@@ -31,7 +31,7 @@ use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
 # My flies
 use fernanACM\RepairUI\commands\RepairCommand;
 use fernanACM\RepairUI\language\Language;
-use fernanACM\RepairUI\manager\FormManeger;
+use fernanACM\RepairUI\manager\FormManager;
 use fernanACM\RepairUI\manager\RepairManager;
 
 class RP extends PluginBase{
@@ -152,10 +152,10 @@ class RP extends PluginBase{
     }
 
     /**
-     * @return FormManeger
+     * @return FormManager
      */
-    public function getFormManager(): FormManeger{
-        return FormManeger::getInstance();
+    public function getFormManager(): FormManager{
+        return FormManager::getInstance();
     }
 
     /**
