@@ -3,6 +3,7 @@ build-by-default: true
 branches:
 - PM5
 - PM4
+- Dev
 projects:
   RepairUI:
     path: ""
