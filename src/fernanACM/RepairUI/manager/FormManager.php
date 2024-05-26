@@ -26,7 +26,7 @@ final class FormManeger{
 		reset as protected;
 	}
 
-    private function __construct(){
+    public function __construct(){
         self::setInstance($this);
     }
 
