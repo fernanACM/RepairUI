@@ -44,6 +44,13 @@ final class Language{
         foreach(self::LANGUAGES as $language){
             Loader::getInstance()->saveResource(self::DATAFOLDER_NAME."/$language.yml");
         }
+        self::loadMessages();
+    }
+
+    /**
+     * @return void
+     */
+    public static function loadMessages(): void{
         self::$messages = new Config(Loader::getInstance()->getDataFolder().self::DATAFOLDER_NAME."/".self::getLanguage().".yml");
     }
 

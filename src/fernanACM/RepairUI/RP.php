@@ -84,14 +84,18 @@ class RP extends PluginBase{
      */
     protected function loadCheck(): void{
         # CONFIG
+        $configUpdated = false;
         if((!$this->config->exists("config-version")) || ($this->config->get("config-version") != self::CONFIG_VERSION)){
             rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "config_old.yml");
             $this->saveResource("config.yml");
             $this->getLogger()->critical("Your configuration file is outdated.");
             $this->getLogger()->notice("Your old configuration has been saved as config_old.yml and a new configuration file has been generated. Please update accordingly.");
-            $this->config->reload();
+            $configUpdated = true;
         }
+        if($configUpdated) $this->config = new Config($this->getDataFolder() . "config.yml");
+
         # LANGUAGES
+        $languageUpdated = false;
         $data = new Config($this->getDataFolder() . "languages/" . $this->config->get("language") . ".yml");
         if((!$data->exists("language-version")) || ($data->get("language-version") != self::LANGUAGE_VERSION)){
             rename($this->getDataFolder() . "languages/" . $this->config->get("language") . ".yml", $this->getDataFolder() . "languages/" . $this->config->get("language") . "_old.yml");
@@ -100,8 +104,9 @@ class RP extends PluginBase{
             }
             $this->getLogger()->critical("Your ".$this->config->get("language").".yml file is outdated.");
             $this->getLogger()->notice("Your old ".$this->config->get("language").".yml has been saved as ".$this->config->get("language")."_old.yml and a new ".$this->config->get("language").".yml file has been generated. Please update accordingly.");
-            $data->reload();
+            $languageUpdated = true;
         }
+        if($languageUpdated) Language::init();
     }
 
     /**
