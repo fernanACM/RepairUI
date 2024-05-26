@@ -8,9 +8,10 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
-namespace fernanACM\RepairUI\events;
+namespace fernanACM\RepairUI;
 
 use pocketmine\event\Listener;
+
 use pocketmine\event\player\PlayerInteractEvent;
 
 use pocketmine\block\VanillaBlocks;
@@ -18,7 +19,7 @@ use pocketmine\block\VanillaBlocks;
 use fernanACM\RepairUI\RP;
 use fernanACM\RepairUI\utils\PluginUtils;
 
-class EventListener implements Listener{
+class Event implements Listener{
     
     /**
      * @param PlayerInteractEvent $event
@@ -27,10 +28,10 @@ class EventListener implements Listener{
     public function onInteract(PlayerInteractEvent $event): void{
     	$player = $event->getPlayer();
     	$block = $event->getBlock();
-        if(RP::getInstance()->config->getNested("Settings.Use.anvil")){
-            if($block->getTypeId() === VanillaBlocks::ANVIL()->getTypeId()){
+        if(boolval(RP::getInstance()->config->getNested("Settings.Use.anvil", true))){
+            if($block->hasSameTypeId(VanillaBlocks::ANVIL()) and $event->getAction() === $event::RIGHT_CLICK_BLOCK){
                 $event->cancel();
-    			RP::getInstance()->getRepairMenu()->getRepairMenu($player);
+    			RP::getInstance()->getFormManager()->getMenu()->open($player);
                 PluginUtils::PlaySound($player, "random.pop", 1, 1);
             }
         }

@@ -8,6 +8,8 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\commands\subcommands;
 
 use pocketmine\player\Player;
@@ -17,15 +19,15 @@ use pocketmine\command\CommandSender;
 use CortexPE\Commando\BaseSubCommand;
 # My files
 use fernanACM\RepairUI\RP;
-use fernanACM\RepairUI\utils\PermissionsUtils;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
-
+use fernanACM\RepairUI\language\Language;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\permissions\Perms;
 class HelpSubCommand extends BaseSubCommand{
     
     public function __construct(){
         parent::__construct("help", "", ["?"]);
-        $this->setPermission(PermissionsUtils::HELP);
+        $this->setPermission(Perms::HELP);
     }
 
     /**
@@ -45,8 +47,8 @@ class HelpSubCommand extends BaseSubCommand{
             $sender->sendMessage("Use this command in-game");
             return;
         }
-        if(!$sender->hasPermission(PermissionsUtils::HELP)){
-            $sender->sendMessage(RP::Prefix(). WordUtils::NO_PERMISSION);
+        if(!$sender->hasPermission(Perms::HELP)){
+            $sender->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_PERMISSION));
             PluginUtils::PlaySound($sender, "mob.villager.no", 1, 1);
             return;
         }

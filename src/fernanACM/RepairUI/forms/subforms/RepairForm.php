@@ -8,9 +8,13 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\forms\subforms;
 
 use pocketmine\player\Player;
+
+use pocketmine\utils\SingletonTrait;
 
 use pocketmine\item\Durable;
 
@@ -20,61 +24,71 @@ use fernanACM\RepairUI\manager\RepairManager;
 
 use fernanACM\RepairUI\RP;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\language\Language;
 use fernanACM\RepairUI\forms\subforms\CostForm;
 
-class RepairForm{
+final class RepairForm{
+    use SingletonTrait{
+		setInstance as protected;
+		reset as protected;
+	}
 
-    /** @var RepairForm|null $instance */
-    private static ?RepairForm $instance = null;
-
-    private function __construct(){
+    public function __construct(){
+        self::setInstance($this);
     }
 
     /**
      * @param Player $player
      * @return void
      */
-	public function getRepairMoney(Player $player): void{
-        $amount = RP::getInstance()->config->getNested("RepairCost.Repair.money-cost");
-        $mode = RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode");
+	public function money(Player $player): void{
+        $cost = intval(RP::getInstance()->config->getNested("RepairCost.Repair.money-cost"));
+        $mode = boolval(RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode"));
         $item = $player->getInventory()->getItemInHand();
-		RP::getEconomy()->getMoney($player, static function(int|float $myMoney) use($player, $amount, $mode, $item): void{
-            $form = new SimpleForm(function(Player $player, $data) use($amount){
+        if($item->isNull()){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
+            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+            return;
+        }
+		RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $cost, $mode, $item): void{
+            $form = new SimpleForm(function(Player $player, $data) use($cost){
                 if(is_null($data)){
-                    CostForm::getInstance()->getRepairCost($player);
+                    CostForm::getInstance()->repair($player);
                     PluginUtils::PlaySound($player, "random.drink", 1, 1.7);
-                    return true;
+                    return;
                 }
                 switch($data){
                     case 0:
-                        RepairManager::getInstance()->getRepairMoney($player, $amount);
+                        RepairManager::getInstance()->getRepairMoney($player, $cost);
                     break;
 
                     case 1:
-                        CostForm::getInstance()->getRepairCost($player);
+                        CostForm::getInstance()->repair($player);
                         PluginUtils::PlaySound($player, "random.drink", 1, 1.7);
                     break;
                 }
             });
-            if($item->isNull()){
-                $player->sendMessage(RP::Prefix() . RP::getMessage($player, WordUtils::NO_ITEM));
-                PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-                return;
-            }
             if(!$item instanceof Durable)return;
             $damage = $item->getDamage();
-            $form->setTitle(RP::getMessage($player, "Forms.RepairMoney.title"));
+            $form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_MONEY_TITLE));
 			if($mode){
-                $content = RP::getMessage($player, "Forms.RepairMoney.content-damage-mode");
-                $total = $amount * $damage;
-                $form->setContent(str_replace(["{BALANCE}", "{COST}", "{TOTAL}", "{DAMAGE}"], [$myMoney, $amount, $total, $damage], $content));
+                $total = $cost * $damage;
+                $form->setContent(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_MONEY_CONTENT_DAMAGE_MODE, [
+                    "{BALANCE}" => $myMoney,
+                    "{COST}" => $cost,
+                    "{TOTAL}" => $total,
+                    "{DAMAGE}" => $damage
+                ]));
             }else{
-                $content = RP::getMessage($player, "Forms.RepairMoney.content-normal-mode");
-                $form->setContent(str_replace(["{BALANCE}", "{COST}", "{DAMAGE}"], [$myMoney, $amount, $damage], $content));
+                $form->setContent(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_MONEY_CONTENT_NORMAL_MODE, [
+                    "{BALANCE}" => $myMoney,
+                    "{COST}" => $cost,
+                    "{DAMAGE}" => $damage
+                ]));
             }
-			$form->addButton(RP::getMessage($player, "Forms.RepairMoney.button-repair"),1,"https://i.imgur.com/QJiGRVV.png");
-			$form->addButton(RP::getMessage($player, "Forms.RepairMoney.button-back"),1,"https://i.imgur.com/YzfZ302.png");
+			$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_MONEY_BUTTON_REPAIR),1,"https://i.imgur.com/QJiGRVV.png");
+			$form->addButton(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_MONEY_BUTTON_BACK),1,"https://i.imgur.com/YzfZ302.png");
 			$player->sendForm($form);
         });
 	}
@@ -83,53 +97,52 @@ class RepairForm{
      * @param Player $player
      * @return void
      */
-	public function getRepairXP(Player $player): void{
-        $amount = RP::getInstance()->config->getNested("RepairCost.Repair.xp-cost");
-        $mode = RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode");
+	public function xp(Player $player): void{
+        $cost = intval(RP::getInstance()->config->getNested("RepairCost.Repair.xp-cost"));
+        $mode = boolval(RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode"));
         $item = $player->getInventory()->getItemInHand();
-        $form = new SimpleForm(function(Player $player, $data) use($amount){
+        if($item->isNull()){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
+            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+            return;
+        }
+        $form = new SimpleForm(function(Player $player, $data) use($cost){
             if(is_null($data)){
-                CostForm::getInstance()->getRepairCost($player);
+                CostForm::getInstance()->repair($player);
                 PluginUtils::PlaySound($player, "random.drink", 1, 1.7);
-                return true;
+                return;
             }
             switch($data){
                 case 0:
-                    RepairManager::getInstance()->getRepairXp($player, $amount);
+                    RepairManager::getInstance()->getRepairXp($player, $cost);
                 break;
 
                 case 1:
-                    CostForm::getInstance()->getRepairCost($player);
+                    CostForm::getInstance()->repair($player);
                     PluginUtils::PlaySound($player, "random.drink", 1, 1.7);
                 break;
             }
         });
-        if($item->isNull()){
-            $player->sendMessage(RP::Prefix() . RP::getMessage($player, WordUtils::NO_ITEM));
-            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-            return;
-        }
         if(!$item instanceof Durable)return;
         $damage = $item->getDamage();
-        $form->setTitle(RP::getMessage($player, "Forms.RepairXP.title"));
+        $form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_XP_TITLE));
         if($mode){
-            $content = RP::getMessage($player, "Forms.RepairXP.content-damage-mode");
-            $total = $amount + $damage;
-            $form->setContent(str_replace(["{XP}", "{COST}", "{TOTAL}", "{DAMAGE}"], [$player->getXpManager()->getXpLevel(), $amount, $total, $damage], $content));
+            $total = $cost * $damage;
+            $form->setContent(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_XP_CONTENT_DAMAGE_MODE, [
+                "{XP}" => intval($player->getXpManager()->getXpProgress()),
+                "{COST}" => $cost,
+                "{TOTAL}" => $total,
+                "{DAMAGE}" => $damage
+            ]));
         }else{
-            $content = RP::getMessage($player, "Forms.RepairXP.content-normal-mode");
-            $form->setContent(str_replace(["{XP}", "{COST}", "{DAMAGE}"], [$player->getXpManager()->getXpLevel(), $amount, $damage], $content));
+            $form->setContent(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_XP_CONTENT_NORMAL_MODE, [
+                "{XP}" => intval($player->getXpManager()->getXpProgress()),
+                "{COST}" => $cost,
+                "{DAMAGE}" => $damage
+            ]));
         }
-        $form->addButton(RP::getMessage($player, "Forms.RepairXP.button-repair"),1,"https://i.imgur.com/QJiGRVV.png");
-        $form->addButton(RP::getMessage($player, "Forms.RepairXP.button-back"),1,"https://i.imgur.com/YzfZ302.png");
+        $form->addButton(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_XP_BUTTON_REPAIR),1,"https://i.imgur.com/QJiGRVV.png");
+        $form->addButton(Language::getPlayerMessage($player, LangKey::FORM_REPAIR_XP_BUTTON_BACK),1,"https://i.imgur.com/YzfZ302.png");
         $player->sendForm($form);
 	}
-
-    /**
-     * @return self
-     */
-    public static function getInstance(): self{
-        if(is_null(self::$instance)) self::$instance = new self();
-        return self::$instance;
-    }
 }

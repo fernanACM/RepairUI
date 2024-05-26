@@ -8,7 +8,7 @@
 # Repara y personaliza los nombres de tus objetos con RepairUI, para servidores PocketMine-MP 5.0
 
 # ¡NO MODIFICAR!
-language-version: "1.0.0"
+language-version: "2.0.0"
 
 Forms:
   RepairMenu:
@@ -17,7 +17,7 @@ Forms:
     button-repair: "&l&2REPARAR{LINE}&r&0Haga clic"
     button-rename: "&l&2RENOMBRAR{LINE}&r&0Haga clic"
     button-lore: "&l&2LORE{LINE}&r&0Haga clic"
-    button-exit: "&l&4CERRAR MENÚ{LINE}&r&0Haga clic"
+    button-close: "&l&4CERRAR MENÚ{LINE}&r&0Haga clic"
 
   RepairMoney:
     title: "&l&dRepairUI&r &a-&l&c REPARAR-DINERO"
@@ -123,6 +123,7 @@ Messages:
     no-item: "&cEsto no es un objeto, cámbialo por otro."
     lore-null: "&bNo has nombrado el lore para este artículo..."
     rename-null: "&bNo has nombrado este objeto..."
+    custom-name-provider: "&c¡No existe tal Modo para nombres personalizados!"
 
   success:
     repair-success: "&a¡La reparación ha sido exitosa!"

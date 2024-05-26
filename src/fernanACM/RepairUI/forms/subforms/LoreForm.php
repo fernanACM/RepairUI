@@ -8,9 +8,13 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\forms\subforms;
 
 use pocketmine\player\Player;
+
+use pocketmine\utils\SingletonTrait;
 
 use Vecnavium\FormsUI\CustomForm;
 
@@ -18,54 +22,59 @@ use fernanACM\RepairUI\manager\RepairManager;
 
 use fernanACM\RepairUI\RP;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\Language;
+use fernanACM\RepairUI\language\LangKey;
 use fernanACM\RepairUI\forms\subforms\CostForm;
 
 class LoreForm{
+    use SingletonTrait{
+        setInstance as protected;
+        reset as protected;
+    }
 
-    /** @var LoreForm|null $instance */
-    private static ?LoreForm $instance = null;
-
-    private function __construct(){
+    public function __construct(){
+        self::setInstance($this);
     }
 
     /**
      * @param Player $player
      * @return void
      */
-	public function getLoreMoney(Player $player): void{
-        $amount = RP::getInstance()->config->getNested("RepairCost.Lore.money-cost");
+	public function money(Player $player): void{
+        $cost = intval(RP::getInstance()->config->getNested("RepairCost.Lore.money-cost"));
         $item = $player->getInventory()->getItemInHand();
-		RP::getEconomy()->getMoney($player, static function(float $myMoney) use($player, $amount, $item): void{
-            $form = new CustomForm(function(Player $player, $data) use($amount, $item){
+        if($item->isNull()){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
+            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+            return;
+        }
+		RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $cost, $item): void{
+            $form = new CustomForm(function(Player $player, $data) use($myMoney, $cost, $item){
                 if(is_null($data)){
-                    CostForm::getInstance()->getLoreCost($player);
+                    CostForm::getInstance()->lore($player);
                     PluginUtils::PlaySound($player, "random.drink", 1, 1.7);
                     return true;
                 }
                 if(empty($data[1])){
-                    $player->sendMessage(RP::Prefix() . RP::getMessage($player, WordUtils::LORE_NULL));
+                    $player->sendMessage(RP::getPrefix() . Language::getMessage(LangKey::ERROR_LORE_NULL));
                     PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
                     return;
                 }
-                RP::getEconomy()->takeMoney($player, $amount, static function(bool $success) use($player, $data, $item): void{
-                    if($success){
-                        RepairManager::getInstance()->sendRenamedItem($player, $item, RepairManager::LORE_MODE, $data[1]);
-                    }else{
-                        $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_MONEY));
-						PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-                    }
+                if($myMoney < $cost){
+                    $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_MONEY));
+                    PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                    return;
+                }
+                RepairManager::getInstance()->sendRenamedItem($player, $item, RepairManager::LORE_MODE, strval($data[1]), function(bool $result) use($player, $cost): void{
+                    if($result) RP::getEconomy()->takeMoney($player, $cost);
                 });
             });
-			$message = str_replace(["{BALANCE}", "{COST}"], [$myMoney, $amount], RP::getMessage($player, "Forms.LoreMoney.content"));
-            if($item->isNull()){
-                $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_ITEM));
-                PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-                return;
-            }
-            $form->setTitle(RP::getMessage($player, "Forms.LoreMoney.title"));
-            $form->addLabel($message);
-            $form->addInput(RP::getMessage($player, "Forms.LoreMoney.input1"), RP::getMessage($player, "Forms.LoreMoney.input2"));
+			$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_LORE_MONEY_TITLE));
+            $form->addLabel(Language::getPlayerMessage($player, LangKey::FORM_LORE_MONEY_CONTENT, [
+                "{BALANCE}" => $myMoney,
+                "{COST}" => $cost
+            ]));
+            $form->addInput(Language::getPlayerMessage($player, LangKey::FORM_LORE_MONEY_INPUT_1), Language::getPlayerMessage($player, LangKey::FORM_LORE_MONEY_INPUT_2));
             $player->sendForm($form);
 		});
 	}
@@ -74,45 +83,41 @@ class LoreForm{
      * @param Player $player
      * @return void
      */
-	public function getLoreXP(Player $player): void{
-        $amount = RP::getInstance()->config->getNested("RepairCost.Lore.xp-cost");
+	public function xp(Player $player): void{
+        $cost = intval(RP::getInstance()->config->getNested("RepairCost.Lore.xp-cost"));
+        $myXp = intval($player->getXpManager()->getXpProgress());
         $item = $player->getInventory()->getItemInHand();
-		$form = new CustomForm(function(Player $player, $data) use($amount, $item){
+        if($item->isNull()){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
+            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+            return;
+        }
+		$form = new CustomForm(function(Player $player, $data) use($myXp, $cost, $item){
             if(is_null($data)){
-                CostForm::getInstance()->getLoreCost($player);
+                CostForm::getInstance()->lore($player);
                 PluginUtils::PlaySound($player, "random.drink", 1, 1.7);
                 return true;
             }
             if(empty($data[1])){
-                $player->sendMessage(RP::Prefix() . RP::getMessage($player, WordUtils::LORE_NULL));
+                $player->sendMessage(RP::getPrefix() . Language::getMessage(LangKey::ERROR_LORE_NULL));
                 PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
                 return;
             }
-            if($player->getXpManager()->getXpLevel() >= $amount){
-                RepairManager::getInstance()->sendRenamedItem($player, $item, RepairManager::LORE_MODE, $data[1]);
-                $player->getXpManager()->subtractXp($amount);
-            }else{
-                $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_XP));
+            if($myXp < $cost){
+                $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_XP));
                 PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                return;
             }
+            RepairManager::getInstance()->sendRenamedItem($player, $item, RepairManager::RENAME_MODE, strval($data[1]), function(bool $result) use($player, $cost): void{
+                if($result) $player->getXpManager()->subtractXp($cost);
+            });
         });	
-		$message = str_replace(["{XP}", "{COST}"], [$player->getXpManager()->getXpLevel(), $amount], RP::getMessage($player, "Forms.LoreXP.content"));
-        if($item->isNull()){
-            $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_ITEM));
-            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-            return;
-        }
-        $form->setTitle(RP::getMessage($player, "Forms.LoreXP.title"));
-        $form->addLabel($message);
-        $form->addInput(RP::getMessage($player, "Forms.LoreXP.input1"), RP::getMessage($player, "Forms.LoreXP.input2"));
+		$form->setTitle(Language::getPlayerMessage($player, LangKey::FORM_LORE_XP_TITLE));
+        $form->addLabel(Language::getPlayerMessage($player, LangKey::FORM_LORE_XP_CONTENT, [
+            "{XP}" => $myXp,
+            "{COST}" => $cost
+        ]));
+        $form->addInput(Language::getPlayerMessage($player, LangKey::FORM_LORE_XP_INPUT_1), Language::getPlayerMessage($player, LangKey::FORM_LORE_XP_INPUT_2));
         $player->sendForm($form);
 	}
-
-    /**
-     * @return self
-     */
-    public static function getInstance(): self{
-        if(is_null(self::$instance)) self::$instance = new self();
-        return self::$instance;
-    }
 }

@@ -8,11 +8,14 @@
 # The creator of this plugin was fernanACM.
 # https://github.com/fernanACM
 
+declare(strict_types=1);
+
 namespace fernanACM\RepairUI\manager;
 
 use pocketmine\player\Player;
 
 use pocketmine\utils\TextFormat;
+use pocketmine\utils\SingletonTrait;
 
 use pocketmine\item\Armor;
 use pocketmine\item\Durable;
@@ -21,17 +24,20 @@ use pocketmine\item\Tool;
 
 use fernanACM\RepairUI\RP;
 use fernanACM\RepairUI\utils\PluginUtils;
-use fernanACM\RepairUI\utils\WordUtils;
+use fernanACM\RepairUI\language\LangKey;
+use fernanACM\RepairUI\language\Language;
 
-class RepairManager{
+final class RepairManager{
+    use SingletonTrait{
+        setInstance as protected;
+        reset as protected;
+    }
 
     public const RENAME_MODE = "customName";
     public const LORE_MODE = "loreName";
-    
-    /** @var RepairManage|null */
-    private static $instance = null;
 
-    private function __construct(){    
+    public function __construct(){
+        self::setInstance($this);
     }
 
     /**
@@ -41,31 +47,33 @@ class RepairManager{
      */
     public function getRepairMoney(Player $player, int $price): void{
         $item = $player->getInventory()->getItemInHand();
-        $mode = RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode");
+        $mode = boolval(RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode"));
         switch($mode){
             case true:
                 if(!$item instanceof Durable) return;
-                RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $price, $item){
+                RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $price, $item): void{
                     $total = $price * $item->getDamage();
-                    if($myMoney >= $total){
-                        if(!$this->sendRepairedItem($player, $item))return;
-                        RP::getEconomy()->takeMoney($player, $total);
-                    }else{
-                        $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_MONEY));
+                    if($myMoney < $total){
+                        $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_MONEY));
                         PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                        return;
                     }
+                    $this->sendRepairedItem($player, $item, function(bool $result) use($player, $total): void{
+                        if($result) RP::getEconomy()->takeMoney($player, $total);
+                    });
                 });
             break;
             
             case false:
                 RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $price, $item): void{
-                    if($myMoney >= $price){
-                        if(!$this->sendRepairedItem($player, $item))return;
-                        RP::getEconomy()->takeMoney($player, $price);
-                    }else{
-                        $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_MONEY));
+                    if($myMoney < $price){
+                        $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_MONEY));
                         PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                        return;
                     }
+                    $this->sendRepairedItem($player, $item, function(bool $result) use($player, $price): void{
+                        if($result) RP::getEconomy()->takeMoney($player, $price);
+                    });
                 });
             break;
         }
@@ -77,91 +85,117 @@ class RepairManager{
      * @return void
      */
     public function getRepairXp(Player $player, int $price): void{
-        $myXp = $player->getXpManager()->getXpLevel();
+        $myXp = intval($player->getXpManager()->getXpProgress());
         $item = $player->getInventory()->getItemInHand();
-        $mode = RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode");
+        $mode = boolval(RP::getInstance()->config->getNested("RepairCost.Repair.damage-mode"));
         switch($mode){
             case true:
                 $damage = $player->getInventory()->getItemInHand();
                 if(!$damage instanceof Durable)return;
-                $total = $price + $damage->getDamage();
-                if($myXp >= $total){
-                    if(!$this->sendRepairedItem($player, $item))return;
-                    $player->getXpManager()->subtractXp($total);
-                }else{
-                    $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_XP));
+                $total = $price * $damage->getDamage();
+                if($myXp < $total){
+                    $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_XP));
                     PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                    return;
                 }
+                $this->sendRepairedItem($player, $item, function(bool $result) use($player, $total): void{
+                    if($result) $player->getXpManager()->subtractXp($total);
+                });
             break;
             
             case false:
-                if($myXp >= $price){
-                    if(!$this->sendRepairedItem($player, $item))return;
-                    $player->getXpManager()->subtractXp($price);
-                }else{
-                    $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_XP));
+                if($myXp < $price){
+                    $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_XP));
                     PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                    return;
                 }
+                $this->sendRepairedItem($player, $item, function(bool $result) use($player, $price): void{
+                    if($result) $player->getXpManager()->subtractXp($price);
+                });
             break;
         }
     }
 
     /**
      * @param Player $player
-     * @param Item $item
-     * @return boolean
+     * @param Item|null $item
+     * @param callable|null $callable
+     * @return void
      */
-    public function sendRepairedItem(Player $player, Item $item): bool{
-        if(!$item instanceof Durable){
-            return false;
-        }
-        if(!$item instanceof Tool && !$item instanceof Armor){
-            $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_ITEM));
+    public function sendRepairedItem(Player $player, ?Item $item = null, ?callable $callable = null): void{
+        $newItem = $item ?? $player->getInventory()->getItemInHand();
+        if($newItem->isNull() || (!($newItem instanceof Durable) && !($newItem instanceof Tool) && !($newItem instanceof Armor))){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-            return false;
+            return;
         }
-        if(!$item->getDamage() > 0){
-            $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_DAMAGE));
+        if($newItem->getDamage() < 0){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_DAMAGE));
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-            return false;
+            return;
         }
-        $item->setDamage(0);
-        $player->getInventory()->setItemInHand($item);
-        $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::REPAIR_SUCCESS));
+        if(!is_null($callable)) $callable(true);
+        $newItem->setDamage(0);
+        $player->getInventory()->setItemInHand($newItem);
+        $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::REPAIR_SUCCESS));
         PluginUtils::PlaySound($player, "random.anvil_use", 1, 1);
-        return true;
     }
 
     /**
      * @param Player $player
-     * @param Item $item
+     * @param Item|null $item
      * @param string $mode
      * @param string $customName
+     * @param callable|null $callable
      * @return void
      */
-    public function sendRenamedItem(Player $player, Item $item, string $mode, string $customName): void{
+    public function sendRenamedItem(Player $player, ?Item $item, string $mode, string $customName, ?callable $callable = null): void{
+        $newItem = $item ?? $player->getInventory()->getItemInHand();
+        if($newItem->isNull()){
+            $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_NO_ITEM));
+            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+            return;
+        }
         switch($mode){
             case self::RENAME_MODE:
-                $item->setCustomName(str_replace(["{LINE}"], ["\n"], TextFormat::colorize($customName)));
-                $player->getInventory()->setItemInHand($item);
-                $player->sendMessage(RP::Prefix(). str_replace(["{RENAME}"], [$customName], RP::getMessage($player, WordUtils::RENAME_SUCCESS)));
+                if(empty($customName)){
+                    $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_RENAME_NULL));
+                    PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                    return;
+                }
+                if(!is_null($callable)) $callable(true);
+                $newItem->setCustomName(str_replace(["{LINE}"], ["\n"], TextFormat::colorize($customName)));
+                $player->getInventory()->setItemInHand($newItem);
+                $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::RENAME_SUCCESS, ["{RENAME}" => $customName]));
                 PluginUtils::PlaySound($player, "random.anvil_use", 1, 1);
             break;
 
             case self::LORE_MODE:
-                $item->setLore([str_replace(["{LINE}"], ["\n"], TextFormat::colorize($customName))]);
-                $player->getInventory()->setItemInHand($item);
-                $player->sendMessage(RP::Prefix(). str_replace(["{LORE}"], [$customName], RP::getMessage($player, WordUtils::LORE_SUCCESS)));
+                if(empty($customName)){
+                    $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_LORE_NULL));
+                    PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
+                    return;
+                }
+                if(!is_null($callable)) $callable(true);
+                $newItem->setLore([str_replace(["{LINE}"], ["\n"], TextFormat::colorize($customName))]);
+                $player->getInventory()->setItemInHand($newItem);
+                $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::LORE_SUCCESS, ["{LORE}" => $customName]));
                 PluginUtils::PlaySound($player, "random.anvil_use", 1, 1);
+            break;
+
+            default:
+                $player->sendMessage(RP::getPrefix(). Language::getMessage(LangKey::ERROR_LORE_NULL));
+                PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             break;
         }
     }
 
     /**
      * @param Player $player
+     * @param callable|null $callable
      * @return void
      */
-    public function sendInventoryAllRepaired(Player $player): void{
+    public function sendInventoryAllRepaired(Player $player, ?callable $callable = null): void{
         foreach($player->getInventory()->getContents() as $slot => $item){
             if(!$item instanceof Durable)continue;
             if(!$item instanceof Tool && !$item instanceof Armor)continue;
@@ -169,7 +203,13 @@ class RepairManager{
                 $player->getInventory()->setItem($slot, $item->setDamage(0));
             }
         }
-    
+        foreach($player->getOffHandInventory()->getContents() as $slot => $offHanditem){
+            if(!$offHanditem instanceof Durable)continue;
+            if(!$offHanditem instanceof Tool && !$offHanditem instanceof Armor)continue;
+            if($offHanditem->getDamage() > 0){
+                $player->getOffHandInventory()->setItem($slot, $offHanditem->setDamage(0));
+            }
+        }
         foreach($player->getArmorInventory()->getContents() as $armorSlot => $armor){
             if(!$armor instanceof Durable)continue;
             if(!$armor instanceof Tool && !$armor instanceof Armor)continue;
@@ -177,34 +217,8 @@ class RepairManager{
                 $player->getArmorInventory()->setItem($armorSlot, $armor->setDamage(0));
             }
         }
-        $player->sendMessage(RP::Prefix() . RP::getMessage($player, WordUtils::REPAIR_ALL_SUCCESS));
-        PluginUtils::PlaySound($player, "random.anvil_use", 1, 1);
-    }    
-
-    /**
-     * @param Player $player
-     * @return void
-     */
-    public function sendItemInHandRepaired(Player $player): void{
-        $item = $player->getInventory()->getItemInHand();
-        if(!$item instanceof Durable)return;
-        if(!$item instanceof Tool && !$item instanceof Armor){
-            $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::NO_ITEM));
-            PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
-            return;
-        }
-        if($item->getDamage() > 0){
-            $player->getInventory()->setItemInHand($item->setDamage(0));
-        }
-        $player->sendMessage(RP::Prefix(). RP::getMessage($player, WordUtils::REPAIR_HAND_SUCCESS));
+        if(!is_null($callable)) $callable(true);
+        $player->sendMessage(RP::getPrefix() . Language::getMessage(LangKey::REPAIR_ALL_SUCCESS));
         PluginUtils::PlaySound($player, "random.anvil_use", 1, 1);
     }
-
-    /**
-	 * @return self
-	 */
-	public static function getInstance(): self{
-		if(is_null(self::$instance))self::$instance = new self();
-        return self::$instance;
-	}
 }
