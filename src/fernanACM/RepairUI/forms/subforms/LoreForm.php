@@ -48,7 +48,7 @@ class LoreForm{
             PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
             return;
         }
-		RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $cost, $item): void{
+	    RP::getEconomy()->getMoney($player, function(int|float $myMoney) use($player, $cost, $item): void{
             $form = new CustomForm(function(Player $player, $data) use($myMoney, $cost, $item){
                 if(is_null($data)){
                     CostForm::getInstance()->lore($player);
@@ -108,7 +108,7 @@ class LoreForm{
                 PluginUtils::PlaySound($player, "mob.villager.no", 1, 1);
                 return;
             }
-            RepairManager::getInstance()->sendRenamedItem($player, $item, RepairManager::RENAME_MODE, strval($data[1]), function(bool $result) use($player, $cost): void{
+            RepairManager::getInstance()->sendRenamedItem($player, $item, RepairManager::LORE_MODE, strval($data[1]), function(bool $result) use($player, $cost): void{
                 if($result) $player->getXpManager()->subtractXp($cost);
             });
         });	
