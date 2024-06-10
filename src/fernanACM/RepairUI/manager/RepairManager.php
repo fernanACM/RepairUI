@@ -221,19 +221,19 @@ final class RepairManager{
      */
     public function sendInventoryAllRepaired(Player $player, ?callable $callable = null): void{
         foreach($player->getInventory()->getContents() as $slot => $item){
-            if(!($item instanceof Durable) || $this->isItem($item))continue;
+            if(!($item instanceof Durable) || !$this->isItem($item))continue;
             if($item->getDamage() > 0){
                 $player->getInventory()->setItem($slot, $item->setDamage(0));
             }
         }
         foreach($player->getOffHandInventory()->getContents() as $slot => $offHanditem){
-            if(!($offHanditem instanceof Durable) || $this->isItem($offHanditem))continue;
+            if(!($offHanditem instanceof Durable) || !$this->isItem($offHanditem))continue;
             if($offHanditem->getDamage() > 0){
                 $player->getOffHandInventory()->setItem($slot, $offHanditem->setDamage(0));
             }
         }
         foreach($player->getArmorInventory()->getContents() as $armorSlot => $armor){
-            if(!($armor instanceof Durable) || $this->isItem($armor))continue;
+            if(!($armor instanceof Durable) || !$this->isItem($armor))continue;
             if($armor->getDamage() > 0){
                 $player->getArmorInventory()->setItem($armorSlot, $armor->setDamage(0));
             }
